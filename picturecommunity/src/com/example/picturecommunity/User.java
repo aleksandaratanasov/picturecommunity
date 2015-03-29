@@ -1,14 +1,18 @@
 package com.example.picturecommunity;
 
+
 import javax.persistence.*;
 
 @Entity
-public class User {
+@Table(name="my_user")
+public class User{
+
+
 	@Id
 	@GeneratedValue(strategy= GenerationType.AUTO)
 	private Long id;
 	
-	private String userName;
+	private String username;
 	private String password;
 	
 	public Long getId(){
@@ -18,10 +22,10 @@ public class User {
 		this.id = id;
 	}
 	public String getUserName() {
-		return userName;
+		return username;
 	}
 	public void setUserName(String userName) {
-		this.userName = userName;
+		this.username = userName;
 	}
 	public String getPassword() {
 		return password;
