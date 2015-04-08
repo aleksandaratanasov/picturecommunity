@@ -1,37 +1,52 @@
 package com.example.picturecommunity;
 
+import java.io.Serializable;
 
 import javax.persistence.*;
 
 @Entity
-@Table(name="my_user")
-public class User{
+@Table(name = "my_user")
+public class User implements Serializable {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -6583325101179874986L;
 
 	@Id
-	@GeneratedValue(strategy= GenerationType.AUTO)
+	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
-	
+
 	private String username;
 	private String password;
-	
-	public Long getId(){
+
+	public User(String username, String password) {
+		this.username = username;
+		this.password = password;
+	}
+
+	public Long getId() {
 		return id;
 	}
+
 	public void setId(Long id) {
 		this.id = id;
 	}
+
 	public String getUserName() {
 		return username;
 	}
+
 	public void setUserName(String userName) {
 		this.username = userName;
 	}
+
 	public String getPassword() {
 		return password;
 	}
+
 	public void setPassword(String password) {
 		this.password = password;
 	}
-	
+
 }
