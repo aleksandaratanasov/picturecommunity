@@ -1,4 +1,4 @@
-package com.example.picturecommunity;
+package com.example.picturecommunity.view;
 
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;

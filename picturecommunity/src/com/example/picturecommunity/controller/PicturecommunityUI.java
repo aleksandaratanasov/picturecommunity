@@ -1,7 +1,12 @@
-package com.example.picturecommunity;
+package com.example.picturecommunity.controller;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.example.picturecommunity.view.AboutView;
+import com.example.picturecommunity.view.AdminView;
+import com.example.picturecommunity.view.LoginView;
+import com.example.picturecommunity.view.PersonalDashboardView;
+import com.example.picturecommunity.view.allUsersDashboardView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -13,11 +18,6 @@ import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
-import com.example.picturecommunity.AboutView;
-import com.example.picturecommunity.AdminView;
-import com.example.picturecommunity.LoginView;
-import com.example.picturecommunity.PersonalDashboardView;
-import com.example.picturecommunity.allUsersDashboardView;
 
 @SuppressWarnings("serial")
 @Theme("picturecommunity")

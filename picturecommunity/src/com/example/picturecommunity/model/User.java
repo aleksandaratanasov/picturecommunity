@@ -1,4 +1,4 @@
-package com.example.picturecommunity;
+package com.example.picturecommunity.model;
 
 import java.io.Serializable;
 

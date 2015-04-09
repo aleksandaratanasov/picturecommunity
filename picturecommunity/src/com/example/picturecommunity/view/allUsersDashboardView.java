@@ -1,4 +1,4 @@
-package com.example.picturecommunity;
+package com.example.picturecommunity.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -12,7 +12,7 @@ public class allUsersDashboardView extends VerticalLayout implements View {
 	public allUsersDashboardView() {
 		setSizeFull();
 		setSpacing(true);
-		addComponent(new Menu());
+		addComponent(new MenuViewComponent());
 		addComponent(new Label("Hello AllUsersDashboardView!"));
 	}
 

@@ -1,4 +1,4 @@
-package com.example.picturecommunity;
+package com.example.picturecommunity.view;
 
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -6,15 +6,13 @@ import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
-import com.example.picturecommunity.Menu;
-
 @SuppressWarnings("serial")
 public class PersonalDashboardView extends VerticalLayout implements View {
 	
 	public PersonalDashboardView() {
 		setSizeFull();
 		setSpacing(true);
-		addComponent(new Menu());
+		addComponent(new MenuViewComponent());
 		addComponent(new Label("Hello PersonalDashboardView!"));
 	}
 

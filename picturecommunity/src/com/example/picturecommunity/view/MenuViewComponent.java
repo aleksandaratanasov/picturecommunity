@@ -1,5 +1,6 @@
-package com.example.picturecommunity;
+package com.example.picturecommunity.view;
 
+import com.example.picturecommunity.controller.PicturecommunityUI;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
@@ -10,9 +11,9 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.BaseTheme;
 
 @SuppressWarnings("serial")
-public class Menu extends CustomComponent {
+public class MenuViewComponent extends CustomComponent {
 	
-	public Menu() {
+	public MenuViewComponent() {
 		HorizontalLayout layout = new HorizontalLayout();
 		
 		Label searchInCurrentDashboardLabel = new Label("Search in current dashboard: ");

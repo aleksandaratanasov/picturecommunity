@@ -1,8 +1,8 @@
-package com.example.picturecommunity;
+package com.example.picturecommunity.view;
 
+import com.example.picturecommunity.controller.PicturecommunityUI;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
