@@ -6,6 +6,7 @@ import com.example.picturecommunity.view.AboutView;
 import com.example.picturecommunity.view.AdminView;
 import com.example.picturecommunity.view.LoginView;
 import com.example.picturecommunity.view.PersonalDashboardView;
+import com.example.picturecommunity.view.RegisterView;
 import com.example.picturecommunity.view.allUsersDashboardView;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -13,9 +14,6 @@ import com.vaadin.navigator.Navigator;
 import com.vaadin.navigator.Navigator.ComponentContainerViewDisplay;
 import com.vaadin.server.VaadinRequest;
 import com.vaadin.server.VaadinServlet;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
@@ -30,6 +28,7 @@ public class PicturecommunityUI extends UI {
 	public static final String ALLUSERSDASHBOARDVIEW = "all users dashboard";
 	public static final String PERSONALDASHBOARDVIEW = "personal dashboard";
 	public static final String ABOUTVIEW = "about";
+	public static final String REGISTERVIEW = "create account";
 
 	@WebServlet(value = "/*", asyncSupported = true)
 	@VaadinServletConfiguration(productionMode = false, ui = PicturecommunityUI.class)
@@ -49,5 +48,6 @@ public class PicturecommunityUI extends UI {
 		navigator.addView(PERSONALDASHBOARDVIEW, new PersonalDashboardView());
 		navigator.addView(ADMINVIEW, new AdminView());
 		navigator.addView(ABOUTVIEW, new AboutView());
+		navigator.addView(REGISTERVIEW, new RegisterView());
 	}
 }
