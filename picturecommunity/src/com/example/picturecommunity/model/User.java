@@ -13,13 +13,19 @@ public class User implements Serializable {
 	 */
 	private static final long serialVersionUID = -6583325101179874986L;
 
+
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private Long id;
+	public Long id;
 
-	private String username;
-	private String password;
+	public String username;
+	public String password;
+	
 
+	public User(){
+		
+	}
+	
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
