@@ -33,7 +33,6 @@ public class RegisterView extends VerticalLayout implements View {
 					public void buttonClick(ClickEvent event) {
 						RegisterModel model = new RegisterModel();
 						if (!username.isEmpty()) {
-							passwordIsInvalidLabel.setVisible(true);
 							if (model.checkUsername(username.getValue())) {
 								if (model.checkPassword(password.getValue(),
 										repeatedPassword.getValue())) {

@@ -62,7 +62,7 @@ public class RegisterModel {
 
 	public boolean checkPassword(String password, String repeatedPassword) {
 		boolean isValid = false;
-		if (password.isEmpty() || !password.equals(repeatedPassword)) {
+		if ( password.isEmpty() || !password.equals(repeatedPassword)) {
 
 		} else {
 			isValid = true;
