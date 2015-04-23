@@ -6,6 +6,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.example.picturecommunity.model.User;
+import com.vaadin.server.VaadinSession;
 
 public class LoginModel {
 
@@ -36,6 +37,8 @@ public class LoginModel {
 			} catch (Exception e) {
 				return false;
 			}
+			
+			VaadinSession.getCurrent().setAttribute("username", username);
 
 			return isValid;
 		}

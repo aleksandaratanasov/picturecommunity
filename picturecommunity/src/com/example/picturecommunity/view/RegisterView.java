@@ -2,8 +2,10 @@ package com.example.picturecommunity.view;
 
 import com.example.picturecommunity.controller.PicturecommunityUI;
 import com.example.picturecommunity.controller.RegisterModel;
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.PasswordField;
@@ -12,6 +14,7 @@ import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 
 @SuppressWarnings("serial")
+@PreserveOnRefresh
 public class RegisterView extends VerticalLayout implements View {
 
 	public RegisterView() {
@@ -39,6 +42,9 @@ public class RegisterView extends VerticalLayout implements View {
 									model.createUser(username.getValue(),
 											password.getValue(),
 											repeatedPassword.getValue());
+									
+									VaadinSession.getCurrent().setAttribute("username", username.getValue());
+									
 									getUI().getNavigator().navigateTo(
 											PicturecommunityUI.PERSONALDASHBOARDVIEW);
 								} else {

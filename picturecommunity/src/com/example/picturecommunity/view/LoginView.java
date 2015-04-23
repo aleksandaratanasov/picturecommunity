@@ -18,7 +18,7 @@ import com.vaadin.ui.Alignment;
 @SuppressWarnings("serial")
 public class LoginView extends VerticalLayout implements View {
 
-	public LoginView() {
+	public LoginView(PicturecommunityUI app) {
 		setSizeFull();
 		setSpacing(true);
 		Label label = new Label(
@@ -37,6 +37,7 @@ public class LoginView extends VerticalLayout implements View {
 				// Verify if user is present in the DB
 				LoginModel model = new LoginModel();
 				if (model.validate(username.getValue(), password.getValue())) {
+
 					// check, if user is an admin
 					if (username.getValue().equals("Admin")) {
 						getUI().getNavigator().navigateTo(

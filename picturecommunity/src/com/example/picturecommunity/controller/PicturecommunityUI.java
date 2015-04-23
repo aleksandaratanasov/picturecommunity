@@ -2,6 +2,7 @@ package com.example.picturecommunity.controller;
 
 import javax.servlet.annotation.WebServlet;
 
+import com.example.picturecommunity.model.User;
 import com.example.picturecommunity.view.AboutView;
 import com.example.picturecommunity.view.AdminView;
 import com.example.picturecommunity.view.LoginView;
@@ -22,7 +23,8 @@ import com.vaadin.ui.VerticalLayout;
 public class PicturecommunityUI extends UI {
 
 	public Navigator navigator;
-	
+	User user;
+
 	// Views
 	public static final String ADMINVIEW = "admin view";
 	public static final String ALLUSERSDASHBOARDVIEW = "all users dashboard";
@@ -37,17 +39,26 @@ public class PicturecommunityUI extends UI {
 
 	@Override
 	protected void init(VaadinRequest request) {
+
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		layout.setSpacing(true);
 		setContent(layout);
-		ComponentContainerViewDisplay viewDisplay = new ComponentContainerViewDisplay(layout);
+		ComponentContainerViewDisplay viewDisplay = new ComponentContainerViewDisplay(
+				layout);
 		navigator = new Navigator(UI.getCurrent(), viewDisplay);
-		navigator.addView("", new LoginView());
+		user = new User();
+		navigator.addView("", new LoginView(this));
 		navigator.addView(ALLUSERSDASHBOARDVIEW, new allUsersDashboardView());
-		navigator.addView(PERSONALDASHBOARDVIEW, new PersonalDashboardView());
+		navigator.addView(PERSONALDASHBOARDVIEW,
+				new PersonalDashboardView(this));
 		navigator.addView(ADMINVIEW, new AdminView());
 		navigator.addView(ABOUTVIEW, new AboutView());
 		navigator.addView(REGISTERVIEW, new RegisterView());
+
+	}
+
+	public User getUser() {
+		return user;
 	}
 }

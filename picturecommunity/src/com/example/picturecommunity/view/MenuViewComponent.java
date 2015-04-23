@@ -1,6 +1,7 @@
 package com.example.picturecommunity.view;
 
 import com.example.picturecommunity.controller.PicturecommunityUI;
+import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
@@ -11,6 +12,7 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.themes.BaseTheme;
 
 @SuppressWarnings("serial")
+@PreserveOnRefresh
 public class MenuViewComponent extends CustomComponent {
 	
 	public MenuViewComponent() {
@@ -55,8 +57,8 @@ public class MenuViewComponent extends CustomComponent {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// logout user from DB
-				// ...
-				
+				// Logout the user
+				getSession().setAttribute("username", null);
 				// Quit UI session
 				getUI().getSession().close();
 				
