@@ -30,8 +30,8 @@ public class LoginModel {
 			q.setParameter("pass", password);
 			try {
 				User user = (User) q.getSingleResult();
-				if (username.equalsIgnoreCase(user.username)
-						&& password.equals(user.password)) {
+				if (username.equalsIgnoreCase(user.getUserName())
+						&& password.equals(user.getPassword())) {
 					isValid = true;
 				}
 			} catch (Exception e) {

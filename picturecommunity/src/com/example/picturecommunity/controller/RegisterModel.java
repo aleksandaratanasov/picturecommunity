@@ -48,7 +48,7 @@ public class RegisterModel {
 
 		try {
 			User user = (User) q.getSingleResult();
-			if (username.equalsIgnoreCase(user.username)) {
+			if (username.equalsIgnoreCase(user.getUserName())) {
 				isValid = false;
 			} else {
 				isValid = true;

@@ -16,10 +16,10 @@ public class User implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	public Long id;
+	private Long id;
 
-	public String username;
-	public String password;
+	private String username;
+	private String password;
 	
 
 	public User(){
