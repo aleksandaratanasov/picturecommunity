@@ -4,6 +4,8 @@ import java.awt.Color;
 import java.awt.GradientPaint;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.Vector;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -86,35 +88,40 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 		}
 		
 		private CategoryDataset createDataset() {
-			ArrayList<User> users = new ArrayList<User>();
+			//ArrayList<User> users = new ArrayList<User>();
 			// fill the list with users from the database limiting the output to only the top 15 (the maximum for the numOfUsers combobox) uploaders
 			// query has to sort by number of uploads and use the LIMIT 15 expression at the end
+			Vector<User> users = (Vector<User>) model.getUploadStats(numOfUploads);
 
 			// row keys
-			ArrayList<String> usernames = new ArrayList<String>();
+			//ArrayList<String> usernames = new ArrayList<String>();
 			// extract username by using getUserName() for each user in the users list
-			usernames.add("user1");
-			usernames.add("user2");
-			usernames.add("user3");
-			usernames.add("user4");
-			usernames.add("user5");
+			//usernames.add("user1");
+			//usernames.add("user2");
+			//usernames.add("user3");
+			//usernames.add("user4");
+			//usernames.add("user5");
 			
 			// column keys - none
-			ArrayList<Long> uploads = new ArrayList<Long>();
+			//ArrayList<Long> uploads = new ArrayList<Long>();
 			// extract number of uploads by using getUploads() for each user in the users list
-			uploads.add((long)8);
-			uploads.add((long)8);
-			uploads.add((long)6);
-			uploads.add((long)5);
-			uploads.add((long)2);
+			//uploads.add((long)8);
+			//uploads.add((long)8);
+			//uploads.add((long)6);
+			//uploads.add((long)5);
+			//uploads.add((long)2);
 			
 			// create the dataset
 			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-			Iterator<String> usernamesIt = usernames.iterator();
-			Iterator<Long> uploadsIt = uploads.iterator();
+			//Iterator<String> usernamesIt = usernames.iterator();
+			//Iterator<Long> uploadsIt = uploads.iterator();
 			
-			while(usernamesIt.hasNext() && uploadsIt.hasNext()) {
-				dataset.addValue(uploadsIt.next(), usernamesIt.next(), "");
+			//while(usernamesIt.hasNext() && uploadsIt.hasNext()) {
+			//	dataset.addValue(uploadsIt.next(), usernamesIt.next(), "");
+			//}
+			
+			for (User user : users) {
+				dataset.addValue(user.getUploads(), user.getUserName(), "");
 			}
 			
 			return dataset;

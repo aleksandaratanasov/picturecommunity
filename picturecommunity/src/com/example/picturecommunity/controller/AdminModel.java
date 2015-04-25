@@ -2,6 +2,7 @@ package com.example.picturecommunity.controller;
 
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -19,7 +20,7 @@ public class AdminModel {
 	
 	private static final String PERSISTENCE_UNIT_NAME = "picturecommunity";
 	private static EntityManagerFactory factory;
-	private LinkedList<User> usersForDeletion;
+	private Set<Long> usersForDeletion;
 	
 	public AdminModel() {
 		
@@ -38,7 +39,13 @@ public class AdminModel {
 	}
 	
 	public void markUserForDeletion(User user) {
-		usersForDeletion.add(user);
+		// since we are using a set repetition is not possible so no need to check if ID is already present
+		usersForDeletion.add(user.getId());
+	}
+	
+	public void unmarkUserForDeletion(User user) {
+		// since we are using a set repetition is not possible so no need to check if ID is already present (besides remove() also does a check internally)
+		usersForDeletion.remove(user.getId());
 	}
 	
 	public void deleteUsers() {
@@ -48,6 +55,11 @@ public class AdminModel {
 		factory = Persistence
 				.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		EntityManager em = factory.createEntityManager();
-		Query q = em.createQuery("DELETE FROM my_user USING :dirtyUsers");
+		Query q;
+		
+		for (Long userId : usersForDeletion) {
+			q = em.createQuery("DELETE FROM User u WHERE u.id = :dirtyUserId")
+				.setParameter("dirtyUserId", userId);
+		}
 	}
 }
