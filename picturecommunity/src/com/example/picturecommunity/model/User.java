@@ -1,6 +1,8 @@
 package com.example.picturecommunity.model;
 
 import java.io.Serializable;
+import java.util.LinkedList;
+import java.util.List;
 
 import javax.persistence.*;
 
@@ -20,7 +22,9 @@ public class User implements Serializable {
 
 	private String username;
 	private String password;
-	
+	private LinkedList<Long> contacts;
+	private long uploads;
+	private LinkedList<Long> imageIds;	// stores only the ID of the image object, which can then be retrieved from the "my_image" table
 
 	public User(){
 		
@@ -29,6 +33,9 @@ public class User implements Serializable {
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
+		contacts = new LinkedList<Long>();
+		imageIds = new LinkedList<Long>();
+		uploads = 0;
 	}
 
 	public Long getId() {
@@ -54,5 +61,25 @@ public class User implements Serializable {
 	public void setPassword(String password) {
 		this.password = password;
 	}
+	
+	public LinkedList<Long> getContacts() {
+		return contacts;
+	}
+	
+	public void addContact(long contactId) {
+		contacts.add(contactId);
+	}
+	
+	public long getUploads() {
+		return uploads;
+	}
 
+	public void addImage(long imageId) {
+		imageIds.add(imageId);
+		uploads++;
+	}
+	
+	public LinkedList<Long> getImages() {
+		return imageIds;
+	}
 }

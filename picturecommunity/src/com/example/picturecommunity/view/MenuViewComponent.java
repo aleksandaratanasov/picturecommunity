@@ -2,6 +2,7 @@ package com.example.picturecommunity.view;
 
 import com.example.picturecommunity.controller.PicturecommunityUI;
 import com.vaadin.annotations.PreserveOnRefresh;
+import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CustomComponent;
@@ -18,8 +19,11 @@ public class MenuViewComponent extends CustomComponent {
 	public MenuViewComponent() {
 		HorizontalLayout layout = new HorizontalLayout();
 		
+		Label title = new Label("<h2><b>Picture Community</b></h2>");
+		title.setContentMode(ContentMode.HTML);
 		Label searchInCurrentDashboardLabel = new Label("Search in current dashboard: ");
 		TextField searchInCurrentDashboard = new TextField();
+		//searchInCurrentDashboard.setCaption("Search in current dashboard: ");
 		
 		Button searchInCurrentDashboardButton = new Button("Search", new Button.ClickListener() {
 			@Override
@@ -68,6 +72,8 @@ public class MenuViewComponent extends CustomComponent {
 		});
 		logoutButton.setStyleName(BaseTheme.BUTTON_LINK);
 		
+		layout.addComponent(title);
+		layout.setComponentAlignment(title, Alignment.TOP_LEFT);
 		layout.addComponent(searchInCurrentDashboardLabel);
 		layout.setComponentAlignment(searchInCurrentDashboardLabel, Alignment.TOP_LEFT);
 		layout.addComponent(searchInCurrentDashboard);
@@ -75,9 +81,9 @@ public class MenuViewComponent extends CustomComponent {
 		layout.addComponent(searchInCurrentDashboardButton);
 		layout.setComponentAlignment(searchInCurrentDashboardButton, Alignment.TOP_LEFT);
 		layout.addComponent(allUsersDashboardButton);
-		layout.setComponentAlignment(allUsersDashboardButton, Alignment.TOP_RIGHT);
+		layout.setComponentAlignment(allUsersDashboardButton, Alignment.TOP_CENTER);
 		layout.addComponent(personalDashboardButton);
-		layout.setComponentAlignment(personalDashboardButton, Alignment.TOP_RIGHT);
+		layout.setComponentAlignment(personalDashboardButton, Alignment.TOP_CENTER);
 		layout.addComponent(aboutButton);
 		layout.setComponentAlignment(aboutButton, Alignment.TOP_RIGHT);
 		layout.addComponent(logoutButton);

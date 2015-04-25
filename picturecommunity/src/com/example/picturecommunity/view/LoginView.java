@@ -9,6 +9,7 @@ import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.BaseTheme;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.PasswordField;
@@ -22,7 +23,7 @@ public class LoginView extends VerticalLayout implements View {
 		setSizeFull();
 		setSpacing(true);
 		Label label = new Label(
-				"<center><h1>Vaadin Navigator Views</h1><br/>Enter your information below to log in.</center>");
+				"<center><h1>Welcome to Picture Community!</h1><br/>Enter your information below to log in.</center>");
 		label.setContentMode(ContentMode.HTML);
 		TextField username = new TextField("Username");
 		PasswordField password = new PasswordField("Password");
@@ -69,14 +70,20 @@ public class LoginView extends VerticalLayout implements View {
 		addComponent(label);
 		addComponent(username);
 		addComponent(password);
-		addComponent(loginButton);
-		addComponent(registerButton);
+		
+		HorizontalLayout buttonsLayout = new HorizontalLayout();
+		buttonsLayout.addComponent(loginButton);
+		buttonsLayout.addComponent(registerButton);
+		//addComponent(loginButton);
+		//addComponent(registerButton);
+		addComponent(buttonsLayout);
 		addComponent(failedLabel);
 		this.setComponentAlignment(label, Alignment.TOP_RIGHT);
 		this.setComponentAlignment(username, Alignment.MIDDLE_CENTER);
 		this.setComponentAlignment(password, Alignment.MIDDLE_CENTER);
-		this.setComponentAlignment(loginButton, Alignment.BOTTOM_CENTER);
-		this.setComponentAlignment(registerButton, Alignment.BOTTOM_CENTER);
+		this.setComponentAlignment(buttonsLayout, Alignment.BOTTOM_CENTER);
+		//this.setComponentAlignment(loginButton, Alignment.BOTTOM_LEFT);
+		//this.setComponentAlignment(registerButton, Alignment.BOTTOM_RIGHT);
 		this.setComponentAlignment(failedLabel, Alignment.BOTTOM_CENTER);
 	}
 
