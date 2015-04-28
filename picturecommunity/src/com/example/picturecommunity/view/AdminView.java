@@ -1,11 +1,22 @@
 package com.example.picturecommunity.view;
 
 import com.vaadin.annotations.PreserveOnRefresh;
+import com.vaadin.data.Property;
+import com.vaadin.event.ItemClickEvent;
+import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.shared.ui.label.ContentMode;
+import com.vaadin.ui.Button;
+import com.vaadin.ui.CheckBox;
+import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
+import com.vaadin.ui.Table;
+import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
+import com.vaadin.ui.Button.ClickEvent;
+import com.vaadin.ui.Table.ColumnResizeEvent;
 
 /*
  * TODO
@@ -23,8 +34,11 @@ public class AdminView extends VerticalLayout implements View {
 		setSizeFull();
 		setSpacing(true);
 		addComponent(new MenuViewComponent());
-		addComponent(new Label("Hello Admin!"));
-		addComponent(new UploadStatisticsViewComponent());
+		HorizontalLayout layout = new HorizontalLayout();
+		layout.setWidth("80%");
+		layout.addComponent(new UserManagementViewComponent());
+		layout.addComponent(new UploadStatisticsViewComponent());
+		addComponent(layout);
 	}
 
 	@Override

@@ -2,10 +2,20 @@ package com.example.picturecommunity.view;
 
 import java.awt.Color;
 import java.awt.GradientPaint;
+import java.awt.PaintContext;
+import java.awt.Rectangle;
+import java.awt.RenderingHints;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Rectangle2D;
+import java.awt.image.ColorModel;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.Vector;
+
+import javax.swing.Painter;
+
+import javafx.scene.paint.Paint;
 
 import org.jfree.chart.ChartFactory;
 import org.jfree.chart.JFreeChart;
@@ -49,7 +59,7 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 		
 		//Notification.show(model.getUploadStats(1).get(0).getUserName());
 		//Notification.show(model.getUploadStats(5).toString());
-		Button TESTUPSTATS = new Button("TEST UPSTATS");
+		/*Button TESTUPSTATS = new Button("TEST UPSTATS");
 		TESTUPSTATS.addClickListener(new Button.ClickListener() {
 			
 			@Override
@@ -61,15 +71,29 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 				Notification.show(stats);
 			}
 		});
-		layout.addComponent(TESTUPSTATS);
+		layout.addComponent(TESTUPSTATS);*/
 		
 		layout.addComponent(numOfUsers);
+		
+		//JFreeChartWrapperContainer jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
+		ValueChangeListener listener = new ValueChangeListener() {
+			public void valueChange(ValueChangeEvent event) {
+				//layout.removeComponent(jfcwc);
+				//layout.removeComponent(jfcwc);
+				JFreeChartWrapperContainer jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
+		        layout.addComponent(jfcwc);	
+			}
+		};
+		/*JFreeChartWrapperContainer jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
 		ValueChangeListener listener = new ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 		        Notification.show("Selected value " + numOfUsers.getValue().toString());
-		        layout.addComponent(new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue())));
+		        
+		        layout.removeComponent(jfcwc);
+		        jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
+		        layout.addComponent(jfcwc);
 		    }
-		};
+		};*/
 		numOfUsers.addValueChangeListener(listener);
 		
 		//layout.addComponent(new JFreeChartWrapperContainer()); // add listener for the combobox, which updates automatically the JFCWcontainer with the selected value (5, 10 or 15)
@@ -92,33 +116,9 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 			// fill the list with users from the database limiting the output to only the top 15 (the maximum for the numOfUsers combobox) uploaders
 			// query has to sort by number of uploads and use the LIMIT 15 expression at the end
 			Vector<User> users = (Vector<User>) model.getUploadStats(numOfUploads);
-
-			// row keys
-			//ArrayList<String> usernames = new ArrayList<String>();
-			// extract username by using getUserName() for each user in the users list
-			//usernames.add("user1");
-			//usernames.add("user2");
-			//usernames.add("user3");
-			//usernames.add("user4");
-			//usernames.add("user5");
-			
-			// column keys - none
-			//ArrayList<Long> uploads = new ArrayList<Long>();
-			// extract number of uploads by using getUploads() for each user in the users list
-			//uploads.add((long)8);
-			//uploads.add((long)8);
-			//uploads.add((long)6);
-			//uploads.add((long)5);
-			//uploads.add((long)2);
 			
 			// create the dataset
 			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
-			//Iterator<String> usernamesIt = usernames.iterator();
-			//Iterator<Long> uploadsIt = uploads.iterator();
-			
-			//while(usernamesIt.hasNext() && uploadsIt.hasNext()) {
-			//	dataset.addValue(uploadsIt.next(), usernamesIt.next(), "");
-			//}
 			
 			for (User user : users) {
 				dataset.addValue(user.getUploads(), user.getUserName(), "");
@@ -145,7 +145,7 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 					"Users",
 					"Number of uploads",
 					dataset,
-					PlotOrientation.VERTICAL,
+					PlotOrientation.HORIZONTAL,
 					true,
 					true,
 					false);
@@ -155,10 +155,10 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 			
 			// get a reference to the plot for further customization
 			CategoryPlot plot = (CategoryPlot)chart.getPlot();
-			plot.setBackgroundPaint(Color.lightGray);
-			plot.setDomainGridlinePaint(Color.white);
+			plot.setBackgroundPaint(Color.white);
+			plot.setDomainGridlinePaint(Color.black);
 			plot.setDomainGridlinesVisible(true);
-			plot.setRangeGridlinePaint(Color.white);
+			plot.setRangeGridlinePaint(Color.black);
 			
 			// set the range axis to display integers only
 			final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
@@ -167,22 +167,16 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 			// disable bar outlines
 			BarRenderer renderer = (BarRenderer)plot.getRenderer();
 			renderer.setDrawBarOutline(false);
+			renderer.setShadowVisible(false);
 			
 			// set gradient paints for series
-			GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue,  0.0f, 0.0f, new Color(0, 0, 64));
-			renderer.setSeriesPaint(0, gp0);
+			//GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue,  0.0f, 0.0f, new Color(0, 0, 64));
+			//renderer.setSeriesPaint(0, gp0);
 			
 			CategoryAxis domainAxis = plot.getDomainAxis();
 			domainAxis.setCategoryLabelPositions(CategoryLabelPositions.createUpRotationLabelPositions(Math.PI / 6.0));
 			
 			return chart;
-		}
-	}
-	
-	public class UserPanel extends Panel {
-		
-		public UserPanel() {
-			
 		}
 	}
 }

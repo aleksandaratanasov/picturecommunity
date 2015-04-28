@@ -38,6 +38,17 @@ public class AdminModel {
 			    .getResultList();
 	}
 	
+	@SuppressWarnings("unchecked")
+	public List<User> getUsers() {
+		factory = Persistence
+				.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+		EntityManager em = factory.createEntityManager();
+		
+		return (List<User>)em.createQuery(
+				"SELECT u FROM User u ORDER BY u.username ASC")
+			    .getResultList();
+	}
+	
 	public void markUserForDeletion(User user) {
 		// since we are using a set repetition is not possible so no need to check if ID is already present
 		usersForDeletion.add(user.getId());

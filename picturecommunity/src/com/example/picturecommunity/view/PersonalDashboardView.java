@@ -25,7 +25,8 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 
 		String username = (String) VaadinSession.getCurrent().getAttribute(
 				"username");
-		addComponent(new Label("Hello " + username + "!"));
+		Label greeting = new Label("Hello " + username + "!");
+		addComponent(greeting);
 
 	}
 
