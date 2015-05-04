@@ -87,20 +87,21 @@ public class AdminModel {
 	private static EntityManagerFactory factory;
 	private List<Long> usersForDeletion;
 	private List<User> users;
+	private boolean toggleAllForDeletionFlag;
 	
 	public AdminModel() {
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		users = getUsers();
 		usersForDeletion = new LinkedList<Long>();
+		toggleAllForDeletionFlag = false;
 	}
 
 	////////////////////////// User retrieval //////////////////////////
 	// Retrieve a fixed number of users (used for the chart)
 	// If amount == 0 complete list of users is retrieved from the database (see getUsers())
 	@SuppressWarnings("unchecked")
-	private List<User> getUsers(int amount) {
+	public List<User> getUsers(int amount) {
 		EntityManager em = factory.createEntityManager();
-		em.close();
 		
 		List<User> users;
 		if(amount < 0)
@@ -122,11 +123,17 @@ public class AdminModel {
 	}
 	
 	// Retrieve complete list of users (used for the user management table)
-	private List<User> getUsers() {
+	public List<User> getUsers() {
 		return getUsers(-1);
 	}
 	
 	////////////////////////// User deletion //////////////////////////
+	// Get the deletion status of a user
+	// If user is present in the list usersForDeletion then he/she is marked as ready for deletion and TRUE will be returned
+	public boolean checkUserStatusForDeletion(long userId) {
+		return usersForDeletion.contains(userId);
+	}
+	
 	// Called when checking the checkbox for a selected user marking him/her as ready for deletion
 	public void markUserForDeletion(long userId) {
 		usersForDeletion.add(userId);
@@ -134,25 +141,32 @@ public class AdminModel {
 	
 	// Called when checking the checkbox for a selected user unmarking him/her as ready for deletion
 	public void unmarkUserForDeletion(long userId) {
-		int index = usersForDeletion.indexOf(userId);
-		if(index >= 0) usersForDeletion.remove(index);
+		usersForDeletion.remove(userId);	// remove() also checks whether the item is in the list so no need to do additional handling here
 	}
 	
-	// Called when checking the "select all" checkbox marking all users as ready for deletion
-	public void markAllUsersForDeletion() {
-		for (User user : users) usersForDeletion.add(user.getId());
+	// Called when (un)checking the "select all" checkbox (un)marking all users as ready for deletion
+	// Returned value is used for the CheckBox component responsible for triggering this function
+	public boolean toggleAllUsersForDeletion() {
+		if(toggleAllForDeletionFlag) usersForDeletion.clear();
+		else for (User user : users) usersForDeletion.add(user.getId());
+		
+		toggleAllForDeletionFlag = !toggleAllForDeletionFlag;
+		
+		return toggleAllForDeletionFlag;
 	}
 	
 	// Called when checking the "select all" checkbox unmarking all users as ready for deletion
-	public void unmarkAllUsersForDeletion() {
-		usersForDeletion.clear();
-	}
+	//public void unmarkAllUsersForDeletion() {
+	//	usersForDeletion.clear();
+	//}
 	
 	// Delete a single user from the database using his/her ID
 	private void deleteUser(long userId) {
 		EntityManager em = factory.createEntityManager();
 		try {
-			Query q = em.createQuery("DELETE FROM User u WHERE u.id = :id").setParameter("id", userId);
+			Query q = em.createQuery(
+					"DELETE FROM User u WHERE u.id = :id")
+					.setParameter("id", userId);
 			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
 		}
 		catch(Exception ex) {

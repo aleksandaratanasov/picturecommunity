@@ -115,7 +115,7 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 			//ArrayList<User> users = new ArrayList<User>();
 			// fill the list with users from the database limiting the output to only the top 15 (the maximum for the numOfUsers combobox) uploaders
 			// query has to sort by number of uploads and use the LIMIT 15 expression at the end
-			Vector<User> users = (Vector<User>) model.getUploadStats(numOfUploads);
+			Vector<User> users = (Vector<User>) model.getUsers(numOfUploads);
 			
 			// create the dataset
 			DefaultCategoryDataset dataset = new DefaultCategoryDataset();
