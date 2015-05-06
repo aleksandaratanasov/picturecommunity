@@ -6,10 +6,12 @@ import java.util.Set;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.example.picturecommunity.model.User;
+import com.vaadin.ui.Notification;
 
 /*
  * NOTES:
@@ -103,17 +105,24 @@ public class AdminModel {
 	public List<User> getUsers(int amount) {
 		EntityManager em = factory.createEntityManager();
 		
-		List<User> users;
-		if(amount < 0)
-			users = (List<User>)em.createQuery(
-					"SELECT u FROM User u ORDER BY u.username ASC")
-					.getResultList();
-		else
-			users = (List<User>)em.createQuery(
-					"SELECT u FROM User u ORDER BY u.uploads DESC")
-				    .setMaxResults(amount)
-				    .getResultList();
-		
+		List<User> users = null;
+		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			if(amount < 0)
+				users = (List<User>)em.createQuery(
+						"SELECT u FROM User u ORDER BY u.username ASC")
+						.getResultList();
+			else
+				users = (List<User>)em.createQuery(
+						"SELECT u FROM User u ORDER BY u.uploads DESC")
+					    .setMaxResults(amount)
+					    .getResultList();
+			tx.commit();
+		}
+		catch(Exception ex) {
+			Notification.show(ex.getMessage());
+		}
 		em.close();
 		
 		if(amount < 0)
@@ -163,14 +172,18 @@ public class AdminModel {
 	// Delete a single user from the database using his/her ID
 	private void deleteUser(long userId) {
 		EntityManager em = factory.createEntityManager();
+
 		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
 			Query q = em.createQuery(
 					"DELETE FROM User u WHERE u.id = :id")
 					.setParameter("id", userId);
 			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
+			tx.commit();
 		}
 		catch(Exception ex) {
-			System.err.println(ex.getMessage());
+			Notification.show(ex.getMessage());
 		}
 		em.close();
 	}

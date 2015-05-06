@@ -1,5 +1,11 @@
 package com.example.picturecommunity.view;
 
+import javax.persistence.EntityManager;
+import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
+import javax.persistence.Persistence;
+import javax.persistence.Query;
+
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.data.Property;
 import com.vaadin.event.ItemClickEvent;
@@ -31,10 +37,34 @@ import com.vaadin.ui.Table.ColumnResizeEvent;
 public class AdminView extends VerticalLayout implements View {
 	
 	public AdminView() {
+		HorizontalLayout layout = new HorizontalLayout();
+		
+		// TEST DELETE USER
+		/*EntityManagerFactory factory = Persistence.createEntityManagerFactory("picturecommunity");
+		EntityManager em = factory.createEntityManager();
+		// THE RIGHT WAY TO DO IT - use EntityTransaction!!!
+		EntityTransaction tx = em.getTransaction();
+		tx.begin();		
+		try {
+			Query q = em.createQuery(
+					"DELETE FROM User u WHERE u.id = :id")
+					.setParameter("id", 1);
+			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
+			
+			layout.addComponent(new Label("DELETE query passed"));
+			em.flush();
+		}
+		catch(Exception ex) {
+			layout.addComponent(new Label(ex.getMessage()));
+		}
+		tx.commit();
+		em.close();*/
+		
+		
 		setSizeFull();
 		setSpacing(true);
 		addComponent(new MenuViewComponent());
-		HorizontalLayout layout = new HorizontalLayout();
+
 		layout.setWidth("80%");
 		layout.addComponent(new UserManagementViewComponent());
 		layout.addComponent(new UploadStatisticsViewComponent());
