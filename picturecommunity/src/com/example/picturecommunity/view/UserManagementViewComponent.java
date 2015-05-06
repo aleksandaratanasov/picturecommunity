@@ -5,6 +5,8 @@ import java.util.List;
 import com.example.picturecommunity.controller.AdminModel;
 import com.example.picturecommunity.model.User;
 import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
+import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -29,7 +31,8 @@ public class UserManagementViewComponent extends Panel {
 
 	public UserManagementViewComponent() {
 		VerticalLayout layout = new VerticalLayout();
-		CheckBox deleteAllCheckbox = new CheckBox("Delete all");
+		/*CheckBox deleteAllCheckbox = new CheckBox("Delete all");
+		deleteAllCheckbox.setImmediate(true);
 		deleteAllCheckbox.addBlurListener(new BlurListener() {
 			
 			private static final long serialVersionUID = 1L;
@@ -39,7 +42,7 @@ public class UserManagementViewComponent extends Panel {
 				deleteAllCheckbox.setValue(model.toggleAllUsersForDeletion());
 			}
 
-		});
+		});*/
 		
 		Button deleteButton = new Button("Delete", new Button.ClickListener() {
 
@@ -48,9 +51,12 @@ public class UserManagementViewComponent extends Panel {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				model.deleteUsers();
+				//deleteAllCheckbox.setValue(false);
+				model.getUsers();
 			}
 		});
 		deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
+		//deleteButton.setImmediate(true);
 		
 		if(model.getUsers().size() == 0) {
 			Label warningSizeUsers = new Label("Warning: users list's size == 0");
@@ -79,6 +85,14 @@ public class UserManagementViewComponent extends Panel {
 		        table.setColumnFooter(column, String.valueOf(width) + "px");
 		    }
 		});
+		
+		table.addValueChangeListener(new ValueChangeListener() {
+			
+			@Override
+			public void valueChange(ValueChangeEvent event) {
+				table.refreshRowCache();
+			}
+		});
 		        
 		// Must be immediate to send the resize events immediately
 		table.setImmediate(true);
@@ -92,19 +106,22 @@ public class UserManagementViewComponent extends Panel {
 		for (User user : model.getUsers()) {
 			Label userIdField = new Label(Long.toString(user.getId()), ContentMode.HTML);
 		    Label usernameField = new Label(user.getUserName(), ContentMode.HTML);
-		    CheckBox markForDeletionField = new CheckBox("delete");
-		    markForDeletionField.setValue(model.checkUserStatusForDeletion(user.getId()));
-		    markForDeletionField.addBlurListener(new BlurListener() {
+		    CheckBox markForDeletionCheckbox = new CheckBox("delete");
+		    markForDeletionCheckbox.setImmediate(true);
+		    markForDeletionCheckbox.setValue(model.checkUserStatusForDeletion(user.getId()));
+		    markForDeletionCheckbox.addBlurListener(new BlurListener() {
 				
 				@Override
 				public void blur(BlurEvent event) {
-					if(markForDeletionField.getValue()) {
-						model.unmarkUserForDeletion(user.getId());
-						markForDeletionField.setValue(false);
+					if(!markForDeletionCheckbox.getValue()) {
+						model.markUserForDeletion(user.getId());
+						Notification.show("Selected user \"" + user.getUserName() + "\" for deletion");
+						//markForDeletionCheckbox.setValue(false);
 					}
 					else {
-						model.markUserForDeletion(user.getId());
-						markForDeletionField.setValue(true);
+						model.unmarkUserForDeletion(user.getId());
+						Notification.show("Deselect user \"" + user.getUserName() + "\" for deletion");
+						//markForDeletionCheckbox.setValue(true);
 					}
 				}
 			});
@@ -138,7 +155,7 @@ public class UserManagementViewComponent extends Panel {
 		    detailsField.addStyleName("link");
 		    
 		    // Create the table row.
-		    table.addItem(new Object[] {userIdField, usernameField, markForDeletionField,
+		    table.addItem(new Object[] {userIdField, usernameField, markForDeletionCheckbox,
 		                                detailsField}, //commentsField
 		                                itemId);
 		}
@@ -146,12 +163,8 @@ public class UserManagementViewComponent extends Panel {
 		// Show just five rows because they are so high.
 		table.setPageLength(10);
 
-		//HorizontalLayout layoutTop = new HorizontalLayout();
-		//layoutTop.addComponent(deleteAllCheckbox);
-		//layoutTop.addComponent(deleteButton);
-		//layout.addComponent(layoutTop);
 		layout.addComponent(deleteButton);
-		layout.addComponent(deleteAllCheckbox);
+		//layout.addComponent(deleteAllCheckbox);
 		layout.addComponent(table);
 		setContent(layout);
 	}
