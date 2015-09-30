@@ -1,7 +1,7 @@
 package com.example.picturecommunity.view;
 
-import com.example.picturecommunity.controller.PicturecommunityUI;
-import com.example.picturecommunity.controller.RegisterModel;
+import com.example.picturecommunity.controller.PicturecommunityMainController;
+import com.example.picturecommunity.controller.RegisterController;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
@@ -34,7 +34,7 @@ public class RegisterView extends VerticalLayout implements View {
 				new Button.ClickListener() {
 					@Override
 					public void buttonClick(ClickEvent event) {
-						RegisterModel model = new RegisterModel();
+						RegisterController model = new RegisterController();
 						if (!username.isEmpty()) {
 							if (model.checkUsername(username.getValue())) {
 								if (model.checkPassword(password.getValue(),
@@ -46,7 +46,7 @@ public class RegisterView extends VerticalLayout implements View {
 									VaadinSession.getCurrent().setAttribute("username", username.getValue());
 									
 									getUI().getNavigator().navigateTo(
-											PicturecommunityUI.PERSONALDASHBOARDVIEW);
+											PicturecommunityMainController.PERSONALDASHBOARDVIEW);
 								} else {
 									passwordIsInvalidLabel.setVisible(true);
 								}

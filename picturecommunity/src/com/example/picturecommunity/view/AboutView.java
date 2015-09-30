@@ -13,7 +13,7 @@ import com.vaadin.ui.VerticalLayout;
 public class AboutView extends VerticalLayout implements View {
 	
 	private Label someText() {
-		Label label = new Label("<center><h1>About this project</h1><br/>This project is meant to demonstrate a relatively basic usage of Vaadin's Navigator.</center>");
+		Label label = new Label("<center><h1>About this project</h1><br/>A community website for managing and sharing pictures.</center>");
 		label.setContentMode(ContentMode.HTML);
 		return label;
 	}

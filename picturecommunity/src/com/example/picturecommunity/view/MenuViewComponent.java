@@ -1,6 +1,6 @@
 package com.example.picturecommunity.view;
 
-import com.example.picturecommunity.controller.PicturecommunityUI;
+import com.example.picturecommunity.controller.PicturecommunityMainController;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
@@ -36,7 +36,7 @@ public class MenuViewComponent extends CustomComponent {
 		Button allUsersDashboardButton = new Button("All users' dashboard", new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				getUI().getNavigator().navigateTo(PicturecommunityUI.ALLUSERSDASHBOARDVIEW);
+				getUI().getNavigator().navigateTo(PicturecommunityMainController.ALLUSERSDASHBOARDVIEW);
 			}
 		});
 		allUsersDashboardButton.setStyleName(BaseTheme.BUTTON_LINK);
@@ -44,7 +44,7 @@ public class MenuViewComponent extends CustomComponent {
 		Button personalDashboardButton = new Button("Personal dashboard", new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				getUI().getNavigator().navigateTo(PicturecommunityUI.PERSONALDASHBOARDVIEW);
+				getUI().getNavigator().navigateTo(PicturecommunityMainController.PERSONALDASHBOARDVIEW);
 			}
 		});
 		personalDashboardButton.setStyleName(BaseTheme.BUTTON_LINK);
@@ -52,7 +52,7 @@ public class MenuViewComponent extends CustomComponent {
 		Button aboutButton = new Button("About", new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
-				getUI().getNavigator().navigateTo(PicturecommunityUI.ABOUTVIEW);
+				getUI().getNavigator().navigateTo(PicturecommunityMainController.ABOUTVIEW);
 			}
 		});
 		aboutButton.setStyleName(BaseTheme.BUTTON_LINK);

@@ -1,6 +1,6 @@
 package com.example.picturecommunity.view;
 
-import com.example.picturecommunity.controller.PicturecommunityUI;
+import com.example.picturecommunity.controller.PicturecommunityMainController;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
@@ -11,11 +11,12 @@ import com.vaadin.ui.VerticalLayout;
 @SuppressWarnings("serial")
 public class PersonalDashboardView extends VerticalLayout implements View {
 
-	public PersonalDashboardView(PicturecommunityUI app) {
+	public PersonalDashboardView(PicturecommunityMainController app) {
 		setSizeFull();
 		setSpacing(true);
 		addComponent(new MenuViewComponent());
-
+		
+		
 	}
 
 	@Override
@@ -27,7 +28,8 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 				"username");
 		Label greeting = new Label("Hello " + username + "!");
 		addComponent(greeting);
-
+		addComponent(new FriendsViewComponent());
+		addComponents(new ImageUploadViewComponent());
 	}
 
 }

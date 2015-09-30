@@ -1,7 +1,7 @@
 package com.example.picturecommunity.view;
 
-import com.example.picturecommunity.controller.PicturecommunityUI;
-import com.example.picturecommunity.controller.LoginModel;
+import com.example.picturecommunity.controller.PicturecommunityMainController;
+import com.example.picturecommunity.controller.LoginController;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.navigator.View;
@@ -19,7 +19,7 @@ import com.vaadin.ui.Alignment;
 @SuppressWarnings("serial")
 public class LoginView extends VerticalLayout implements View {
 
-	public LoginView(PicturecommunityUI app) {
+	public LoginView(PicturecommunityMainController app) {
 		setSizeFull();
 		setSpacing(true);
 		Label label = new Label(
@@ -36,16 +36,16 @@ public class LoginView extends VerticalLayout implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// Verify if user is present in the DB
-				LoginModel model = new LoginModel();
+				LoginController model = new LoginController();
 				if (model.validate(username.getValue(), password.getValue())) {
 
 					// check, if user is an admin
 					if (username.getValue().equals("Admin")) {
 						getUI().getNavigator().navigateTo(
-								PicturecommunityUI.ADMINVIEW);
+								PicturecommunityMainController.ADMINVIEW);
 					} else {
 						getUI().getNavigator().navigateTo(
-								PicturecommunityUI.PERSONALDASHBOARDVIEW);
+								PicturecommunityMainController.PERSONALDASHBOARDVIEW);
 					}
 
 				} else {
@@ -60,7 +60,7 @@ public class LoginView extends VerticalLayout implements View {
 					@Override
 					public void buttonClick(ClickEvent event) {
 						getUI().getNavigator().navigateTo(
-								PicturecommunityUI.REGISTERVIEW);
+								PicturecommunityMainController.REGISTERVIEW);
 
 					}
 				});

@@ -2,9 +2,10 @@ package com.example.picturecommunity.model;
 
 import java.io.Serializable;
 import java.util.LinkedList;
-import java.util.List;
 
 import javax.persistence.*;
+
+import org.eclipse.persistence.annotations.ChangeTracking;
 
 @Entity
 @Table(name = "my_user")
@@ -22,9 +23,11 @@ public class User implements Serializable {
 
 	private String username;
 	private String password;
-	private LinkedList<Long> contacts;
+	private LinkedList<User> contacts = new LinkedList<User>();
 	private long uploads;
-	private LinkedList<Long> imageIds;	// stores only the ID of the image object, which can then be retrieved from the "my_image" table
+	
+	@OneToMany(mappedBy="uploader")
+	private LinkedList<Image> imageIds;	// stores only the ID of the image object, which can then be retrieved from the "my_image" table
 
 	public User(){
 		
@@ -33,8 +36,8 @@ public class User implements Serializable {
 	public User(String username, String password) {
 		this.username = username;
 		this.password = password;
-		contacts = new LinkedList<Long>();
-		imageIds = new LinkedList<Long>();
+		
+		//imageIds = new LinkedList<Long>();
 		uploads = 0;
 	}
 
@@ -62,24 +65,34 @@ public class User implements Serializable {
 		this.password = password;
 	}
 	
-	public LinkedList<Long> getContacts() {
+	public LinkedList<User> getContacts() {
+		if(contacts == null) {
+			contacts = new LinkedList<User>();
+		}
 		return contacts;
 	}
 	
-	public void addContact(long contactId) {
-		contacts.add(contactId);
+	public void addContact(User user) {
+		contacts.add(user);
 	}
 	
 	public long getUploads() {
 		return uploads;
 	}
+	
+	public void setUploads(long uploads){
+		this.uploads = uploads;
+	}
 
-	public void addImage(long imageId) {
-		imageIds.add(imageId);
-		uploads++;
+	public void addImage(Image image) {
+		this.imageIds.add(image);
+		if(image.getUploader() != this){
+			image.setUploader(this);
+		}
+		uploads = imageIds.size();
 	}
 	
-	public LinkedList<Long> getImages() {
+	public LinkedList<Image> getImages() {
 		return imageIds;
 	}
 }

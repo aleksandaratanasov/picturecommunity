@@ -15,12 +15,14 @@ public class allUsersDashboardView extends VerticalLayout implements View {
 		setSizeFull();
 		setSpacing(true);
 		addComponent(new MenuViewComponent());
-		addComponent(new Label("Hello AllUsersDashboardView!"));
+		
+		addComponent(new Label("Hello allUsersDashboardView!"));
 	}
 
 	@Override
 	public void enter(ViewChangeEvent event) {
 		Notification.show("In this view you can view a collection of selected pictures from other users");
+		addComponent(new FriendsViewComponent());
 	}
 
 }

@@ -20,7 +20,7 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 @Theme("picturecommunity")
-public class PicturecommunityUI extends UI {
+public class PicturecommunityMainController extends UI {
 
 	public Navigator navigator;
 	User user;
@@ -33,25 +33,29 @@ public class PicturecommunityUI extends UI {
 	public static final String REGISTERVIEW = "create account";
 
 	@WebServlet(value = "/*", asyncSupported = true)
-	@VaadinServletConfiguration(productionMode = false, ui = PicturecommunityUI.class)
+	@VaadinServletConfiguration(productionMode = false, ui = PicturecommunityMainController.class)
 	public static class Servlet extends VaadinServlet {
 	}
 
 	@Override
 	protected void init(VaadinRequest request) {
 
+		// Setup the UI
 		final VerticalLayout layout = new VerticalLayout();
 		layout.setMargin(true);
 		layout.setSpacing(true);
 		setContent(layout);
 		ComponentContainerViewDisplay viewDisplay = new ComponentContainerViewDisplay(
 				layout);
+		
+		// Create the base of the UI - a navigator
 		navigator = new Navigator(UI.getCurrent(), viewDisplay);
 		user = new User();
+		
+		// Add all views to the navigator
 		navigator.addView("", new LoginView(this));
 		navigator.addView(ALLUSERSDASHBOARDVIEW, new allUsersDashboardView());
-		navigator.addView(PERSONALDASHBOARDVIEW,
-				new PersonalDashboardView(this));
+		navigator.addView(PERSONALDASHBOARDVIEW, new PersonalDashboardView(this));
 		navigator.addView(ADMINVIEW, new AdminView());
 		navigator.addView(ABOUTVIEW, new AboutView());
 		navigator.addView(REGISTERVIEW, new RegisterView());

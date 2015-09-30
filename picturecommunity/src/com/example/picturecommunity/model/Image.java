@@ -24,6 +24,10 @@ public class Image implements Serializable {
 	private Instant uploadTime;
 	private boolean viewStatus;
 	
+	@ManyToOne(fetch=FetchType.LAZY)
+	@JoinColumn
+	private User uploader;
+	
 	public Image() {
 		
 	}
@@ -46,6 +50,10 @@ public class Image implements Serializable {
 
 	public String getPath() {
 		return path;
+	}
+	
+	public void setPath(String path){
+		this.path = path;
 	}
 	
 	public String getName() {
@@ -75,5 +83,19 @@ public class Image implements Serializable {
 	public String getUploadTimeAsString() {
 		return uploadTime.toString();
 	}
+
+	public User getUploader() {
+		return uploader;
+	}
+
+	public void setUploader(User uploader) {
+		this.uploader = uploader;
+		if(!uploader.getImages().contains(this)){
+			uploader.getImages().add(this);
+			uploader.setUploads(uploader.getImages().size());
+		}
+	}
+	
+	
 
 }

@@ -29,7 +29,7 @@ import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
 import org.vaadin.addon.JFreeChartWrapper;
 
-import com.example.picturecommunity.controller.AdminModel;
+import com.example.picturecommunity.controller.AdminController;
 import com.example.picturecommunity.model.User;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.data.Property.ValueChangeEvent;
@@ -45,7 +45,8 @@ import com.vaadin.ui.Button.ClickEvent;
 @SuppressWarnings("serial")
 @PreserveOnRefresh
 public class UploadStatisticsViewComponent extends CustomComponent {
-	AdminModel model = new AdminModel();
+	AdminController model = new AdminController();
+	JFreeChartWrapperContainer jfcwc;
 	
 	public UploadStatisticsViewComponent() {
 		VerticalLayout layout = new VerticalLayout();
@@ -56,16 +57,17 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 		numOfUsers.addItem("5");
 		numOfUsers.addItem("10");
 		numOfUsers.addItem("15");
+		numOfUsers.select("5");
 		
-		//Notification.show(model.getUploadStats(1).get(0).getUserName());
-		//Notification.show(model.getUploadStats(5).toString());
+		//Notification.show(controller.getUploadStats(1).get(0).getUserName());
+		//Notification.show(controller.getUploadStats(5).toString());
 		/*Button TESTUPSTATS = new Button("TEST UPSTATS");
 		TESTUPSTATS.addClickListener(new Button.ClickListener() {
 			
 			@Override
 			public void buttonClick(ClickEvent event) {
 				String stats = "";
-				for (User u : model.getUploadStats(10)) {
+				for (User u : controller.getUploadStats(10)) {
 					stats += "[user: " + u.getUserName() + "|uploads: " + u.getUploads() + "]\n";
 				}
 				Notification.show(stats);
@@ -74,13 +76,15 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 		layout.addComponent(TESTUPSTATS);*/
 		
 		layout.addComponent(numOfUsers);
+		jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
+        layout.addComponent(jfcwc);	
 		
-		//JFreeChartWrapperContainer jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
+		// Recreate the chart every time a different value is selected from the ComboBox
 		ValueChangeListener listener = new ValueChangeListener() {
 			public void valueChange(ValueChangeEvent event) {
 				//layout.removeComponent(jfcwc);
-				//layout.removeComponent(jfcwc);
-				JFreeChartWrapperContainer jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
+				layout.removeComponent(jfcwc);
+				jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
 		        layout.addComponent(jfcwc);	
 			}
 		};

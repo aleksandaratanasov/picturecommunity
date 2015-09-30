@@ -1,10 +1,7 @@
 package com.example.picturecommunity.view;
 
-import java.util.List;
-
-import com.example.picturecommunity.controller.AdminModel;
+import com.example.picturecommunity.controller.AdminController;
 import com.example.picturecommunity.model.User;
-import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.FieldEvents.BlurEvent;
@@ -12,13 +9,10 @@ import com.vaadin.event.FieldEvents.BlurListener;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
-import com.vaadin.ui.CustomComponent;
-import com.vaadin.ui.HorizontalLayout;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.Table.ColumnResizeEvent;
@@ -27,7 +21,8 @@ import com.vaadin.ui.themes.BaseTheme;
 public class UserManagementViewComponent extends Panel {
 	
 	private static final long serialVersionUID = 1L;
-	AdminModel model = new AdminModel();
+	AdminController controller = new AdminController();
+	Table table;
 
 	public UserManagementViewComponent() {
 		VerticalLayout layout = new VerticalLayout();
@@ -39,7 +34,7 @@ public class UserManagementViewComponent extends Panel {
 
 			@Override
 			public void blur(BlurEvent event) {
-				deleteAllCheckbox.setValue(model.toggleAllUsersForDeletion());
+				deleteAllCheckbox.setValue(controller.toggleAllUsersForDeletion());
 			}
 
 		});*/
@@ -50,20 +45,22 @@ public class UserManagementViewComponent extends Panel {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				model.deleteUsers();
+				controller.deleteUsers();
 				//deleteAllCheckbox.setValue(false);
-				model.getUsers();
+				//controller.getUsers();
+				table.refreshRowCache();
 			}
 		});
 		deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
 		//deleteButton.setImmediate(true);
 		
-		if(model.getUsers().size() == 0) {
+		if(controller.getUsers().isEmpty()) {
 			Label warningSizeUsers = new Label("Warning: users list's size == 0");
 			layout.addComponent(warningSizeUsers);
 		}
 		
-		Table table = new Table();
+		//Table table = new Table();
+		table = new Table();
 		table.setSelectable(true);
 		table.addStyleName("components-inside");
 		table.setColumnCollapsingAllowed(true);
@@ -103,23 +100,23 @@ public class UserManagementViewComponent extends Panel {
 		//table.addContainerProperty("Comments",      TextField.class, null);
 		table.addContainerProperty("Details",       Button.class,    null);
 		
-		for (User user : model.getUsers()) {
+		for (User user : controller.getUsers()) {
 			Label userIdField = new Label(Long.toString(user.getId()), ContentMode.HTML);
 		    Label usernameField = new Label(user.getUserName(), ContentMode.HTML);
 		    CheckBox markForDeletionCheckbox = new CheckBox("delete");
 		    markForDeletionCheckbox.setImmediate(true);
-		    markForDeletionCheckbox.setValue(model.checkUserStatusForDeletion(user.getId()));
+		    markForDeletionCheckbox.setValue(controller.checkUserStatusForDeletion(user.getId()));
 		    markForDeletionCheckbox.addBlurListener(new BlurListener() {
 				
 				@Override
 				public void blur(BlurEvent event) {
-					if(!markForDeletionCheckbox.getValue()) {
-						model.markUserForDeletion(user.getId());
+					if(markForDeletionCheckbox.getValue()) {
+						controller.markUserForDeletion(user.getId());
 						Notification.show("Selected user \"" + user.getUserName() + "\" for deletion");
 						//markForDeletionCheckbox.setValue(false);
 					}
 					else {
-						model.unmarkUserForDeletion(user.getId());
+						controller.unmarkUserForDeletion(user.getId());
 						Notification.show("Deselect user \"" + user.getUserName() + "\" for deletion");
 						//markForDeletionCheckbox.setValue(true);
 					}
@@ -137,7 +134,7 @@ public class UserManagementViewComponent extends Panel {
 		    // Create a button and handle its click. A Button does not
 		    // know the item it is contained in, so we have to store the
 		    // item ID as user-defined data.
-		    Button detailsField = new Button("show details");
+		    Button detailsField = new Button("Show details");
 		    detailsField.setData(itemId);
 		    detailsField.addClickListener(new Button.ClickListener() {
 		        /**
@@ -185,7 +182,7 @@ public class UserManagementViewComponent extends Panel {
 		});
 		deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
 		
-		List<User> users = model.getUsers();
+		List<User> users = controller.getUsers();
 		
 		if(users.size() == 0) {
 			Label warningSizeUsers = new Label("DEBUG_INFO: users.size() == 0");
