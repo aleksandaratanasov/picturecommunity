@@ -21,7 +21,7 @@ public class AboutView extends VerticalLayout implements View {
 	public AboutView() {
 		setSizeFull();
 		setSpacing(true);
-		addComponent(new MenuViewComponent());
+		addComponent(new MenuViewComponent(false));
 		addComponent(new Label("Hello AboutView!"));
 		addComponent(someText());
 	}

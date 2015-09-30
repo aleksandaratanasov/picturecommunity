@@ -14,7 +14,7 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 	public PersonalDashboardView(PicturecommunityMainController app) {
 		setSizeFull();
 		setSpacing(true);
-		addComponent(new MenuViewComponent());
+		addComponent(new MenuViewComponent(false));
 		
 		
 	}

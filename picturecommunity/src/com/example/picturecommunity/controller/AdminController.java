@@ -191,6 +191,7 @@ public class AdminController {
 
 		// Delete user
 		// Status: works
+		
 		/*try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();

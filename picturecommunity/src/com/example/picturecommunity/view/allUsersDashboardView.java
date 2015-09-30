@@ -14,7 +14,7 @@ public class allUsersDashboardView extends VerticalLayout implements View {
 	public allUsersDashboardView() {
 		setSizeFull();
 		setSpacing(true);
-		addComponent(new MenuViewComponent());
+		addComponent(new MenuViewComponent(false));
 		
 		addComponent(new Label("Hello allUsersDashboardView!"));
 	}

@@ -63,7 +63,7 @@ public class AdminView extends VerticalLayout implements View {
 		
 		setSizeFull();
 		setSpacing(true);
-		addComponent(new MenuViewComponent());
+		addComponent(new MenuViewComponent(true));
 
 		layout.setWidth("80%");
 		layout.addComponent(new UserManagementViewComponent());
