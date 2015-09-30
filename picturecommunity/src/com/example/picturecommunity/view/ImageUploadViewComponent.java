@@ -12,25 +12,18 @@ import com.vaadin.ui.Upload;
 import com.vaadin.ui.VerticalLayout;
 
 public class ImageUploadViewComponent extends CustomComponent {
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	ImageController receiver = new ImageController();
 	
 	public ImageUploadViewComponent(){
 		VerticalLayout layout = new VerticalLayout();
 		
-
-		
-		
 		//Creating Upload
 		Upload imageUpload = new Upload("Upload your Image here", receiver);
 		imageUpload.setButtonCaption("Start Upload");
 		imageUpload.addSucceededListener(receiver);
 
-		
 		//Creating Comment Field
 		TextField comment = new TextField("Comment your Picture");
 		comment.addValueChangeListener(receiver);
@@ -39,26 +32,18 @@ public class ImageUploadViewComponent extends CustomComponent {
 		CheckBox viewstatus = new CheckBox("public Picture");
 		viewstatus.addValueChangeListener(receiver);
 
-		
-		
 		//Adding Panel for Checkbox and Comment Field
 		HorizontalLayout uploadData = new HorizontalLayout();
 		uploadData.addComponent(comment);
 		uploadData.addComponent(viewstatus);
 		uploadData.setComponentAlignment(viewstatus, Alignment.BOTTOM_RIGHT);
 		uploadData.setSpacing(true);
-		
 
 		layout.addComponent(imageUpload);
 		layout.setComponentAlignment(imageUpload, Alignment.BOTTOM_LEFT );
 		layout.addComponent(uploadData);
 		layout.setComponentAlignment(uploadData, Alignment.BOTTOM_LEFT);
 
-
 		setCompositionRoot(layout);
 	}
-	
-
-
-
 }

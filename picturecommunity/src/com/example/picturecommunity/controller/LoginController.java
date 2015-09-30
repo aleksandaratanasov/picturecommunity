@@ -6,6 +6,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 import com.example.picturecommunity.model.User;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.UI;
 
 public class LoginController {
 
@@ -37,7 +38,9 @@ public class LoginController {
 				return false;
 			}
 			
+			// FIXME There seems to be a problem with setting up the attribute. When I try using it in another view I get null
 			VaadinSession.getCurrent().setAttribute("username", username);
+			
 
 			return isValid;
 		}

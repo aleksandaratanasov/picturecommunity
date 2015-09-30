@@ -16,7 +16,7 @@ import com.vaadin.ui.themes.BaseTheme;
 @PreserveOnRefresh
 public class MenuViewComponent extends CustomComponent {
 	
-	public MenuViewComponent(boolean disablePersonalDashboard) {
+	public MenuViewComponent(boolean adminMode) {
 		HorizontalLayout layout = new HorizontalLayout();
 		
 		Label title = new Label("<h2><b>Picture Community</b></h2>");
@@ -42,17 +42,21 @@ public class MenuViewComponent extends CustomComponent {
 		layout.addComponent(searchInCurrentDashboardButton);
 		layout.setComponentAlignment(searchInCurrentDashboardButton, Alignment.TOP_LEFT);
 		
-		Button allUsersDashboardButton = new Button("All users' dashboard", new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				getUI().getNavigator().navigateTo(PicturecommunityMainController.ALLUSERSDASHBOARDVIEW);
-			}
-		});
-		allUsersDashboardButton.setStyleName(BaseTheme.BUTTON_LINK);
-		layout.addComponent(allUsersDashboardButton);
-		layout.setComponentAlignment(allUsersDashboardButton, Alignment.TOP_CENTER);
+		// Add special "All Users Dashboard" view for administrators or modify the present one to distinguish
+		// between a normal user and an admin
+		//if(!adminMode) {
+			Button allUsersDashboardButton = new Button("All users' dashboard", new Button.ClickListener() {
+				@Override
+				public void buttonClick(ClickEvent event) {
+					getUI().getNavigator().navigateTo(PicturecommunityMainController.ALLUSERSDASHBOARDVIEW);
+				}
+			});
+			allUsersDashboardButton.setStyleName(BaseTheme.BUTTON_LINK);
+			layout.addComponent(allUsersDashboardButton);
+			layout.setComponentAlignment(allUsersDashboardButton, Alignment.TOP_CENTER);
+		//}
 		
-		if(!disablePersonalDashboard) {
+		if(!adminMode) {
 			Button personalDashboardButton = new Button("Personal dashboard", new Button.ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
@@ -63,16 +67,31 @@ public class MenuViewComponent extends CustomComponent {
 			layout.addComponent(personalDashboardButton);
 			layout.setComponentAlignment(personalDashboardButton, Alignment.TOP_CENTER);
 		}
-		
-		Button aboutButton = new Button("About", new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				getUI().getNavigator().navigateTo(PicturecommunityMainController.ABOUTVIEW);
-			}
-		});
-		aboutButton.setStyleName(BaseTheme.BUTTON_LINK);
-		layout.addComponent(aboutButton);
-		layout.setComponentAlignment(aboutButton, Alignment.TOP_RIGHT);
+		else {
+			Button adminDashboardButton = new Button("Admin dashboard", new Button.ClickListener() {
+				@Override
+				public void buttonClick(ClickEvent event) {
+					getUI().getNavigator().navigateTo(PicturecommunityMainController.ADMINVIEW);
+				}
+			});
+			adminDashboardButton.setStyleName(BaseTheme.BUTTON_LINK);
+			layout.addComponent(adminDashboardButton);
+			layout.setComponentAlignment(adminDashboardButton, Alignment.TOP_CENTER);
+		}
+
+		// Add special "About" view for administrators or modify the present one to distinguish
+		// between a normal user and an admin
+		if(!adminMode) {
+			Button aboutButton = new Button("About", new Button.ClickListener() {
+				@Override
+				public void buttonClick(ClickEvent event) {
+					getUI().getNavigator().navigateTo(PicturecommunityMainController.ABOUTVIEW);
+				}
+			});
+			aboutButton.setStyleName(BaseTheme.BUTTON_LINK);
+			layout.addComponent(aboutButton);
+			layout.setComponentAlignment(aboutButton, Alignment.TOP_RIGHT);
+		}
 		
 		Button logoutButton = new Button("Logout", new Button.ClickListener() {
 			@Override
