@@ -15,6 +15,7 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+import javax.persistence.Table;
 
 import com.example.picturecommunity.model.Image;
 import com.example.picturecommunity.model.User;
@@ -134,29 +135,6 @@ public class AdminController {
 		try {
 			EntityTransaction tx = emImg.getTransaction();
 			tx.begin();
-			/*Query pathsQ = emImg.createQuery(
-					"SELECT i,u FROM Image i, User u WHERE i.uploader_id = u.id AND i.uploader_id = :uid"
-					).setParameter("uid", userId);*/
-			
-			//Query pathsQ = emImg.createNativeQuery(
-			//		"SELECT path FROM my_image WHERE my_image.uploader_id = ?", Image.class);
-			//pathsQ.setParameter(1, userId);
-			
-			/*Query pathsQ = emImg.createNativeQuery(
-					"SELECT path FROM my_image WHERE my_image.uploader_id = ?")
-					.setParameter(1, userId);
-					
-			List<String> userImagePaths=(List<String>)pathsQ.getResultList();
-			File imageFile;
-			for(String path : userImagePaths) {
-				// Delete image
-				System.out.println("Deleting image \"" + path + "\"");
-				imageFile = new File(path);
-				if(!imageFile.delete()) {
-					System.out.println("Failed to delete the images uploaded by the selected user");
-					return;
-				}
-			}*/
 			
 			// Delete images uploaded by the selected user
 			File imageFile;
@@ -174,18 +152,9 @@ public class AdminController {
 				emImg.remove(imageEntity);
 			}	
 			tx.commit();
-			
-			// Delete all rows in the Image table that contain our user as uploader
-			// ...
-			/*
-			Query q = em.createQuery(
-					"DELETE FROM User u WHERE u.id = :id")
-					.setParameter("id", userId);
-			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
-			*/
-			
 		}
 		catch(Exception ex) {
+			// See what kind of handling is appropriate here
 			System.out.println(ex.getMessage());
 		}
 		
@@ -203,7 +172,20 @@ public class AdminController {
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-			//...
+			  /*List<User> relatedUsers = (List<User>)em.createQuery(
+					"SELECT u FROM User u WHERE u.id != :id")
+					  .setParameter("id", u.getId())
+					  .getResultList();
+			  for (User relatedUser : relatedUsers) {
+				relatedUser.getContacts().remove(u.getId());
+			  }*/
+			  // Delete all entries of other users that have the selected user in their contacts
+			  Query qDeleteAddedBy = em.createQuery(
+					  "DELETE FROM my_user_my_user WHERE contacts_ID = :id").setParameter("id", u.getId());
+  			  // Delete all entries of selected user that contain his contacts
+			  Query qOwn = em.createQuery(
+					  "DELETE FROM my_user_my_user WHERE User_ID = :id").setParameter("id", u.getId());
+					  
 			tx.commit();
 		}
 		catch(Exception ex) {

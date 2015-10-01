@@ -1,11 +1,13 @@
 package com.example.picturecommunity.view;
 
 import com.example.picturecommunity.controller.AdminController;
+import com.example.picturecommunity.model.Image;
 import com.example.picturecommunity.model.User;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.FieldEvents.BlurEvent;
 import com.vaadin.event.FieldEvents.BlurListener;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.CheckBox;
@@ -143,10 +145,18 @@ public class UserManagementViewComponent extends Panel {
 				private static final long serialVersionUID = 1L;
 
 				public void buttonClick(ClickEvent event) {
-		            // Get the item identifier from the user-defined data.
-		            //Long iid = (Long)event.getButton().getData();
-		            Notification.show("Uploads: " + Long.toString(user.getUploads()));
-		                              //iid.intValue() + " clicked.");
+					String friends = "";
+					for(User u : user.getContacts()) friends += u.getUserName() + " ";
+					String uploads = "";
+					for(Image uploadedImage : user.getImages()) {
+						String filePath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath() + "/" + user.getUserName() + "/";
+						String filePathFinal = uploadedImage.getPath().replace(filePath, "");
+						uploads += "Image [" + Long.toString(uploadedImage.getId()) + "] : " + filePathFinal + "\n";
+					}
+		            Notification.show(
+		            		"Uploads: " + Long.toString(user.getUploads()) + "\n" + 
+		            		"Friends: " + friends + "\n" + 
+		            		"Files:\n" + uploads);
 		        } 
 		    });
 		    detailsField.addStyleName("link");
