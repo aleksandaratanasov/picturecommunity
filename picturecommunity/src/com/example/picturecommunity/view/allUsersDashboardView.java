@@ -18,7 +18,6 @@ public class allUsersDashboardView extends VerticalLayout implements View {
 
 		// TODO Make this different if an admin opens it compared to a normal user
 		//String currentUser = (String)VaadinSession.getCurrent().getAttribute("username"); // FIXME Returns null; see LoginController
-		
 		addComponent(new MenuViewComponent(false));
 		
 		addComponent(new Label("Hello allUsersDashboardView!"));

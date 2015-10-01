@@ -85,6 +85,24 @@ public class FriendsController {
 		return friendNames;
 	}
 	
+	public static List<String> getFriendNames(String user) {
+		
+		List<String> friendNames = new ArrayList<String>();
+		String currentUsername = (String)VaadinSession.getCurrent().getAttribute("username");
+		
+		EntityManager em = factory.createEntityManager();
+		Query q = em
+				.createQuery("SELECT u FROM User u WHERE u.username = :login");
+		q.setParameter("login", user);
+		
+		User u = (User)q.getSingleResult();
+		LinkedList<User> friends = u.getContacts();
+		for(User friend:friends) {
+			friendNames.add(friend.getUserName());
+		}
+		return friendNames;
+	}
+	
 	// TODO Add friends retrieval as a list of ids (more efficient then using strings)
 	/*public List<Long> getFriendIds() {
 		return null;

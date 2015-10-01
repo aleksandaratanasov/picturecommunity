@@ -1,28 +1,11 @@
 package com.example.picturecommunity.view;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
-import javax.persistence.Persistence;
-import javax.persistence.Query;
-
 import com.vaadin.annotations.PreserveOnRefresh;
-import com.vaadin.data.Property;
-import com.vaadin.event.ItemClickEvent;
-import com.vaadin.event.ItemClickEvent.ItemClickListener;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.shared.ui.label.ContentMode;
-import com.vaadin.ui.Button;
-import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.HorizontalLayout;
-import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
-import com.vaadin.ui.Table;
-import com.vaadin.ui.TextField;
 import com.vaadin.ui.VerticalLayout;
-import com.vaadin.ui.Button.ClickEvent;
-import com.vaadin.ui.Table.ColumnResizeEvent;
 
 /*
  * TODO
@@ -38,28 +21,6 @@ public class AdminView extends VerticalLayout implements View {
 	
 	public AdminView() {
 		HorizontalLayout layout = new HorizontalLayout();
-		
-		// TEST DELETE USER
-		/*EntityManagerFactory factory = Persistence.createEntityManagerFactory("picturecommunity");
-		EntityManager em = factory.createEntityManager();
-		// THE RIGHT WAY TO DO IT - use EntityTransaction!!!
-		EntityTransaction tx = em.getTransaction();
-		tx.begin();		
-		try {
-			Query q = em.createQuery(
-					"DELETE FROM User u WHERE u.id = :id")
-					.setParameter("id", 1);
-			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
-			
-			layout.addComponent(new Label("DELETE query passed"));
-			em.flush();
-		}
-		catch(Exception ex) {
-			layout.addComponent(new Label(ex.getMessage()));
-		}
-		tx.commit();
-		em.close();*/
-		
 		
 		setSizeFull();
 		setSpacing(true);

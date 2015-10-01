@@ -1,7 +1,10 @@
 package com.example.picturecommunity.controller;
 
+import java.io.File;
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
@@ -15,6 +18,8 @@ import javax.persistence.Query;
 
 import com.example.picturecommunity.model.Image;
 import com.example.picturecommunity.model.User;
+import com.sun.xml.internal.ws.message.EmptyMessageImpl;
+import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Notification;
 
 /*
@@ -24,70 +29,6 @@ import com.vaadin.ui.Notification;
  * findUserbyId -> entitymanager.find(User.class, id) -> abholen, löschen und dann als transaktion zurück schreiben
  *  -----------------------> updateUploads()
  */
-
-/*
-public class AdminController {
-	
-	private static final String PERSISTENCE_UNIT_NAME = "picturecommunity";
-	private static EntityManagerFactory factory;
-	private Set<Long> usersForDeletion;
-	private List<User> users;
-	
-	public AdminController() {
-		
-	}
-	
-	
-
-	@SuppressWarnings("unchecked")
-	public List<User> getUploadStats(int numOfUploaders) {
-		factory = Persistence
-				.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-		EntityManager em = factory.createEntityManager();
-		
-		return (List<User>)em.createQuery(
-				"SELECT u FROM User u ORDER BY u.uploads DESC")
-			    .setMaxResults(numOfUploaders)
-			    .getResultList();
-	}
-	
-	@SuppressWarnings("unchecked")
-	public List<User> getUsers() {
-		factory = Persistence
-				.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-		EntityManager em = factory.createEntityManager();
-		
-		return (List<User>)em.createQuery(
-				"SELECT u FROM User u ORDER BY u.username ASC")
-			    .getResultList();
-	}
-	
-	public void markUserForDeletion(User user) {
-		// since we are using a set repetition is not possible so no need to check if ID is already present
-		usersForDeletion.add(user.getId());
-	}
-	
-	public void unmarkUserForDeletion(User user) {
-		// since we are using a set repetition is not possible so no need to check if ID is already present (besides remove() also does a check internally)
-		usersForDeletion.remove(user.getId());
-	}
-	
-	public void deleteUsers() {
-		
-		if(usersForDeletion.size() == 0) return;
-		
-		factory = Persistence
-				.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
-		EntityManager em = factory.createEntityManager();
-		Query q;
-		
-		for (Long userId : usersForDeletion) {
-			q = em.createQuery("DELETE FROM User u WHERE u.id = :dirtyUserId")
-				.setParameter("dirtyUserId", userId);
-		}
-	}
-}
-*/
 
 public class AdminController {
 	
@@ -181,59 +122,117 @@ public class AdminController {
 	
 	// Delete a single user from the database using his/her ID
 	private void deleteUser(long userId) {
-		System.out.println("Deleting user \"" + userId + "\"");
+		System.out.println("Deleting user with ID " + userId);
 		EntityManager em = factory.createEntityManager();
 		EntityManager emImg = factory.createEntityManager();
+		User u = UserController.findUserbyId(userId);
 		
-		// Delete contact-entry for all users who have current user in their contact list
-		// Status: todo
-		//...
-
-		// Delete user
-		// Status: works
-		
-		/*try {
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
-			Query q = em.createQuery(
-					"DELETE FROM User u WHERE u.id = :id")
-					.setParameter("id", userId);
-			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
-			tx.commit();
-		}
-		catch(Exception ex) {
-			System.out.println(ex.getMessage());
-		}
-		em.close();*/
+		// First we try to delete the files that are associated with the user and then if
+		// the deletion was successful, we delete the user himself
 		
 		// Delete images uploaded by the user
-		// status: work in progress
 		try {
-			EntityTransaction tx = em.getTransaction();
+			EntityTransaction tx = emImg.getTransaction();
 			tx.begin();
 			/*Query pathsQ = emImg.createQuery(
 					"SELECT i,u FROM Image i, User u WHERE i.uploader_id = u.id AND i.uploader_id = :uid"
 					).setParameter("uid", userId);*/
-			Query pathsQ = emImg.createNativeQuery(
-					"SELECT uploader_id,path FROM my_image WHERE my_image.uploader_id = ?", Image.class);
-			pathsQ.setParameter(1, userId);
+			
+			//Query pathsQ = emImg.createNativeQuery(
+			//		"SELECT path FROM my_image WHERE my_image.uploader_id = ?", Image.class);
+			//pathsQ.setParameter(1, userId);
+			
+			/*Query pathsQ = emImg.createNativeQuery(
+					"SELECT path FROM my_image WHERE my_image.uploader_id = ?")
+					.setParameter(1, userId);
+					
 			List<String> userImagePaths=(List<String>)pathsQ.getResultList();
+			File imageFile;
 			for(String path : userImagePaths) {
 				// Delete image
-				System.out.println("IMAGE PATH: " + path);
-			}
+				System.out.println("Deleting image \"" + path + "\"");
+				imageFile = new File(path);
+				if(!imageFile.delete()) {
+					System.out.println("Failed to delete the images uploaded by the selected user");
+					return;
+				}
+			}*/
 			
+			// Delete images uploaded by the selected user
+			File imageFile;
+			for (Image image : u.getImages()) {
+				System.out.println("Deleting image \"" + image.getPath() + "\"");
+				
+				// Delete the image files
+				imageFile = new File(image.getPath());
+				if(!imageFile.delete()) {
+					System.out.println("Failed to delete the images uploaded by the selected user");
+					return;
+				}
+				
+				Image imageEntity = emImg.getReference(Image.class, image.getId());
+				emImg.remove(imageEntity);
+			}	
+			tx.commit();
+			
+			// Delete all rows in the Image table that contain our user as uploader
+			// ...
 			/*
 			Query q = em.createQuery(
 					"DELETE FROM User u WHERE u.id = :id")
 					.setParameter("id", userId);
 			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
 			*/
+			
+		}
+		catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		// Delete user's empty folder
+		try {
+			// Get folder
+			File userDir = new File(VaadinService.getCurrent().getBaseDirectory().getAbsolutePath() + "/" + u.getUserName() + "/");
+			userDir.delete();
+		}
+		catch(Exception ex) {
+			System.out.println(ex.getMessage());
+		}
+		
+		// Check whether the user has been added to the contacts of other users and delete his entry if true
+		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			//...
+			tx.commit();
+		}
+		catch(Exception ex) {
+			System.out.println(ex. getMessage());
+		}
+		
+		// Delete user
+		try {
+			EntityTransaction tx = em.getTransaction();
+			tx.begin();
+			Query q = em.createQuery(
+					"DELETE FROM User u WHERE u.id = :id")
+					.setParameter("id", userId);
+			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
 			tx.commit();
 		}
 		catch(Exception ex) {
 			System.out.println(ex.getMessage());
 		}
+		
+		// Remove from list of marked for deletion
+		usersForDeletion.remove((Long)userId);
+		
+		// Remove user from all other users who have him
+		// Query all users and see who has our user marked for deletion in their contacts
+		// ...
+		
+		
+		em.close();
 	}
 	
 	// Delete all users from the database marked for deletion

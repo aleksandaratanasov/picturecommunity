@@ -3,7 +3,7 @@ package com.example.picturecommunity.view;
 import com.vaadin.annotations.PreserveOnRefresh;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
-import com.vaadin.server.VaadinSession;
+import com.vaadin.server.VaadinService;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Label;
 import com.vaadin.ui.Notification;
@@ -23,7 +23,7 @@ public class AboutView extends VerticalLayout implements View {
 		setSizeFull();
 		setSpacing(true);
 		addComponent(new MenuViewComponent(false));
-		addComponent(new Label("Hello AboutView! Logged in as " + VaadinSession.getCurrent().getAttribute("username")));
+		addComponent(new Label("Hello AboutView!"));//+ VaadinService.getCurrentRequest().getWrappedSession().getAttribute("username")));
 		addComponent(someText());
 	}
 

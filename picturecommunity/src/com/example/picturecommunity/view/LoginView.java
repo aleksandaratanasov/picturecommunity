@@ -6,6 +6,8 @@ import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.VerticalLayout;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
+import com.vaadin.server.VaadinService;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.Button;
 import com.vaadin.ui.Button.ClickEvent;
 import com.vaadin.ui.themes.BaseTheme;
@@ -40,6 +42,8 @@ public class LoginView extends VerticalLayout implements View {
 				LoginController model = new LoginController();
 				if (model.validate(username.getValue(), password.getValue())) {
 
+					//getUI().getSession().setAttribute("username", username);
+					//VaadinService.getCurrentRequest().getWrappedSession().setAttribute("username", username);
 					// check, if user is an admin
 					if (username.getValue().equals("Admin")) {
 						getUI().getNavigator().navigateTo(

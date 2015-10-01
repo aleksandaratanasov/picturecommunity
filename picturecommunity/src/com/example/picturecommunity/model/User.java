@@ -23,10 +23,20 @@ public class User implements Serializable {
 
 	private String username;
 	private String password;
+	
+	// contacts stores all users that the current user has added to his friends list allowing them to view his gallery
+	// TODO Contacts should be a set
 	private LinkedList<User> contacts = new LinkedList<User>();
+	// addedBy stores all users that have the current user in their contacts list
+	// The main purpose of this is to make the deletion process of an user easier
+	// Normally we will have to traverse each user's contacts list looking for the current user's ID upon deletion
+	// By using addedBy we create a bidirectional relation between the users - we still traverse all users in the
+	// DB but we access the contacts of only those, who are stored in this list
+	//private LinkedList<User> addedBy = new LinkedList<User>();
 	private long uploads;
 	
 	@OneToMany(mappedBy="uploader")
+	// TODO imageIds should be a set
 	private LinkedList<Image> imageIds;	// stores only the ID of the image object, which can then be retrieved from the "my_image" table
 
 	public User(){
@@ -66,14 +76,18 @@ public class User implements Serializable {
 	}
 	
 	public LinkedList<User> getContacts() {
-		if(contacts == null) {
-			contacts = new LinkedList<User>();
-		}
+		if(contacts == null) contacts = new LinkedList<User>();
 		return contacts;
 	}
 	
+	/*public LinkedList<User> getAddedBy() {
+		if(addedBy == null) addedBy = new LinkedList<User>();
+		return addedBy;
+	}*/
+	
 	public void addContact(User user) {
-		contacts.add(user);
+		contacts.add(user);	// Add the selected user as a contact of the current user
+		//user.addedBy.add(this); // Add the current user to the "added by" list of the selected user
 	}
 	
 	public long getUploads() {
