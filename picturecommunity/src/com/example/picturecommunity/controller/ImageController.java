@@ -102,12 +102,13 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 			try{
 				EntityTransaction entr = em.getTransaction();
 				entr.begin();
-					Image i = new Image();
-					i.setName((name != "") ? name : file.getName());
+					//Image i = new Image();
+				    Image i = new Image(user, file.getPath(), (name != "") ? name : file.getName(), viewstatus, comment);
+					/*i.setName((name != "") ? name : file.getName());
 					i.setPath(file.getPath());
 					i.setUploader(user);
 					i.setViewStatus(viewstatus);
-					i.setComment(comment);
+					i.setComment(comment);*/
 					em.persist(i);
 				entr.commit();
 				

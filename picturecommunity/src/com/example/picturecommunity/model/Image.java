@@ -29,14 +29,15 @@ public class Image implements Serializable {
 	private User uploader;
 	
 	public Image() {
-		
+		uploadTime = Instant.now();
 	}
 	
-	public Image(String path, String name, boolean viewStatus) {
+	/*public Image(String path, String name, boolean viewStatus) {
 		this(path, name, viewStatus, "");
-	}
+	}*/
 	
-	public Image(String path, String name, boolean viewStatus, String comment) {
+	public Image(User uploader, String path, String name, boolean viewStatus, String comment) {
+		this.uploader = uploader;
 		this.path = path;
 		this.name = name;
 		this.viewStatus = viewStatus;
