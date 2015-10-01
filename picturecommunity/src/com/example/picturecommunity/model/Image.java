@@ -41,7 +41,7 @@ public class Image implements Serializable {
 		this.name = name;
 		this.viewStatus = viewStatus;
 		this.comment = comment;
-		this.uploadTime = Instant.now();
+		uploadTime = Instant.now();
 	}
 
 	public Long getId() {

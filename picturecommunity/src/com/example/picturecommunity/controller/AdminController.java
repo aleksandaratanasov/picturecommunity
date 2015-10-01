@@ -180,10 +180,10 @@ public class AdminController {
 				relatedUser.getContacts().remove(u.getId());
 			  }*/
 			  // Delete all entries of other users that have the selected user in their contacts
-			  Query qDeleteAddedBy = em.createQuery(
+			  Query qDeleteAddedBy = em.createNativeQuery(
 					  "DELETE FROM my_user_my_user WHERE contacts_ID = :id").setParameter("id", u.getId());
   			  // Delete all entries of selected user that contain his contacts
-			  Query qOwn = em.createQuery(
+			  Query qOwn = em.createNativeQuery( //em.createQuery(
 					  "DELETE FROM my_user_my_user WHERE User_ID = :id").setParameter("id", u.getId());
 					  
 			tx.commit();
@@ -196,10 +196,16 @@ public class AdminController {
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
-			Query q = em.createQuery(
+			
+			  User userEntity = em.getReference(User.class, u.getId());
+			  em.remove(userEntity);
+			
+			/*Query q = em.createQuery(
 					"DELETE FROM User u WHERE u.id = :id")
 					.setParameter("id", userId);
 			if(q.executeUpdate() < 0) throw new Exception("Shitty documention on executeUpdate() doesn't give any information on the return codes...Nice!");
+			*/
+			
 			tx.commit();
 		}
 		catch(Exception ex) {
