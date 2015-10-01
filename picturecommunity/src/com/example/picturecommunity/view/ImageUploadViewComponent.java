@@ -2,6 +2,8 @@ package com.example.picturecommunity.view;
 
 import com.example.picturecommunity.controller.ImageController;
 import com.sun.corba.se.impl.util.PackagePrefixChecker;
+import com.vaadin.data.Property;
+import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CustomComponent;
@@ -17,6 +19,7 @@ public class ImageUploadViewComponent extends CustomComponent {
 	ImageController receiver = new ImageController();
 	
 	public ImageUploadViewComponent(){
+		// FIXME Alignment looks like shit
 		VerticalLayout layout = new VerticalLayout();
 		
 		//Creating Upload
@@ -25,8 +28,28 @@ public class ImageUploadViewComponent extends CustomComponent {
 		imageUpload.addSucceededListener(receiver);
 
 		//Creating Comment Field
-		TextField comment = new TextField("Comment your Picture");
-		comment.addValueChangeListener(receiver);
+		TextField comment = new TextField("Comment");
+		//comment.addValueChangeListener(receiver);
+		comment.addValueChangeListener(new Property.ValueChangeListener() {
+
+			@Override
+			public void valueChange(com.vaadin.data.Property.ValueChangeEvent event) {
+				String comment = (String)event.getProperty().getValue();
+				receiver.setComment(comment);
+				
+			}
+		});
+		TextField name = new TextField("Name");
+		name.addValueChangeListener(new Property.ValueChangeListener() {
+
+			@Override
+			public void valueChange(com.vaadin.data.Property.ValueChangeEvent event) {
+				String name = (String)event.getProperty().getValue();
+				receiver.setName(name);
+				
+			}
+		});
+		//name.addValueChangeListener(receiver);
 
 		//Adding Checkbox for Public or Private Picture
 		CheckBox viewstatus = new CheckBox("public Picture");
@@ -35,6 +58,7 @@ public class ImageUploadViewComponent extends CustomComponent {
 		//Adding Panel for Checkbox and Comment Field
 		HorizontalLayout uploadData = new HorizontalLayout();
 		uploadData.addComponent(comment);
+		uploadData.addComponent(name);
 		uploadData.addComponent(viewstatus);
 		uploadData.setComponentAlignment(viewstatus, Alignment.BOTTOM_RIGHT);
 		uploadData.setSpacing(true);

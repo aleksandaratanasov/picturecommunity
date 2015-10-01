@@ -14,6 +14,7 @@ import javax.persistence.Persistence;
 
 import com.example.picturecommunity.model.Image;
 import com.example.picturecommunity.model.User;
+import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.server.Page;
@@ -41,6 +42,7 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 	private User user;
 	private boolean fileExists;
 	private String comment;
+	private String name;
 	private boolean pictureViewStatus;
 	
 	public ImageController() {
@@ -61,7 +63,7 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 
 		if(!fileExists){
 			user = UserController.findUserbyName(username);
-			createImage(file, comment, pictureViewStatus, user);
+			createImage(file, comment, name, pictureViewStatus, user);
 			UserController.updateUploads(user);
 		}else {
 			fileExists = false;
@@ -93,7 +95,7 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 	        return fos; // Return the output stream to write to
 	}
 	
-	public void createImage(File file, String comment, boolean viewstatus, User user ){
+	public void createImage(File file, String comment, String name, boolean viewstatus, User user ){
 		if(file.exists()){
 			factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 			EntityManager em = factory.createEntityManager();
@@ -101,7 +103,7 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 				EntityTransaction entr = em.getTransaction();
 				entr.begin();
 					Image i = new Image();
-					i.setName(file.getName());
+					i.setName((name != "") ? name : file.getName());
 					i.setPath(file.getPath());
 					i.setUploader(user);
 					i.setViewStatus(viewstatus);
@@ -114,10 +116,22 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 			}
 		}
 	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	public void setComment(String comment) {
+		this.comment = comment;
+	}
 
 	@Override
 	public void valueChange(ValueChangeEvent event) {
-		if(event.getProperty().getClass().equals(TextField.class)) comment = (String) event.getProperty().getValue();
+		// FIXME Add support  for adding name of the uploaded picture
+		if(event.getProperty().getClass().equals(TextField.class)) {
+			//comment = (String)event.getProperty().getValue();
+			//name = (String)event.getProperty().getValue();
+		}
 		else if (event.getProperty().getClass().equals(CheckBox.class)) pictureViewStatus = (Boolean) event.getProperty().getValue();
 	}
 }
