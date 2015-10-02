@@ -55,18 +55,21 @@ public class ImageUploadViewComponent extends CustomComponent {
 		CheckBox viewstatus = new CheckBox("public Picture");
 		viewstatus.addValueChangeListener(receiver);
 
-		//Adding Panel for Checkbox and Comment Field
-		HorizontalLayout uploadData = new HorizontalLayout();
-		uploadData.addComponent(comment);
-		uploadData.addComponent(name);
-		uploadData.addComponent(viewstatus);
-		uploadData.setComponentAlignment(viewstatus, Alignment.BOTTOM_RIGHT);
-		uploadData.setSpacing(true);
+		//Comment and name text fields are aligned horizontally
+		// TODO Sadly the Upload component takes too much space horizontally. If the ImageUpload component is to be vertical we need a custom Upload component
+		HorizontalLayout uploadTextSettings = new HorizontalLayout();
+		uploadTextSettings.addComponent(name);
+		uploadTextSettings.addComponent(comment);
+		VerticalLayout uploadSettings = new VerticalLayout();
+		uploadSettings.addComponent(uploadTextSettings);
+		uploadSettings.addComponent(viewstatus);
+		//uploadData.setComponentAlignment(viewstatus, Alignment.BOTTOM_RIGHT);
+		uploadSettings.setSpacing(true);
 
 		layout.addComponent(imageUpload);
-		layout.setComponentAlignment(imageUpload, Alignment.BOTTOM_LEFT );
-		layout.addComponent(uploadData);
-		layout.setComponentAlignment(uploadData, Alignment.BOTTOM_LEFT);
+		//layout.setComponentAlignment(imageUpload, Alignment.BOTTOM_LEFT );
+		layout.addComponent(uploadSettings);
+		//layout.setComponentAlignment(uploadData, Alignment.BOTTOM_LEFT);
 
 		setCompositionRoot(layout);
 	}

@@ -7,6 +7,7 @@ import java.util.List;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
+import javax.persistence.NoResultException;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
 
@@ -77,10 +78,15 @@ public class FriendsController {
 				.createQuery("SELECT u FROM User u WHERE u.username = :login");
 		q.setParameter("login", currentUsername);
 		
-		User user = (User) q.getSingleResult();
-		LinkedList<User> friends = user.getContacts();
-		for(User friend:friends) {
-			friendNames.add(friend.getUserName());
+		try {
+			User user = (User)q.getSingleResult();
+			LinkedList<User> friends = user.getContacts();
+			for(User friend:friends) {
+				friendNames.add(friend.getUserName());
+			}
+		}
+		catch(NoResultException ex) {
+			System.out.println(ex.getMessage());
 		}
 		return friendNames;
 	}
@@ -95,10 +101,15 @@ public class FriendsController {
 				.createQuery("SELECT u FROM User u WHERE u.username = :login");
 		q.setParameter("login", user);
 		
-		User u = (User)q.getSingleResult();
-		LinkedList<User> friends = u.getContacts();
-		for(User friend:friends) {
-			friendNames.add(friend.getUserName());
+		try {
+			User u = (User)q.getSingleResult();
+			LinkedList<User> friends = u.getContacts();
+			for(User friend:friends) {
+				friendNames.add(friend.getUserName());
+			}
+		}
+		catch(NoResultException ex) {
+			System.out.println(ex.getMessage());
 		}
 		return friendNames;
 	}
