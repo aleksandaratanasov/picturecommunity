@@ -6,7 +6,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "my_image")
-public class Image implements Serializable {
+public class Image implements Serializable{
 
 	/**
 	 * 
