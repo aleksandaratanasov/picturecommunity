@@ -50,5 +50,11 @@
 		<!-- JFreeCharts -->
 		<dependency org="org.vaadin.addon" name="jfreechartwrapper" rev="3.0.2"/>
 		
+		<!-- Thumbnailator -->
+		<dependency org="net.coobird" name="thumbnailator" rev="0.4.8"/>
+		
+		<!-- Apache Common IO (for the FilenameUtils) -->
+		<dependency org="org.apache.commons" name="commons-io" rev="1.3.2"/>
+				
 	</dependencies>
 </ivy-module>

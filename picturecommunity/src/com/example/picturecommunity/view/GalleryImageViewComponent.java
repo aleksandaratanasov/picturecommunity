@@ -16,6 +16,7 @@ import com.vaadin.ui.VerticalLayout;
 import java.io.File;
 
 import com.example.picturecommunity.controller.GalleryController;
+import com.example.picturecommunity.controller.GalleryImageController;
 import com.example.picturecommunity.model.Image;
 
 // A container for a single image allowing user interaction with the underlying
@@ -23,7 +24,14 @@ import com.example.picturecommunity.model.Image;
 // Parent: GalleryViewCOmponent
 public class GalleryImageViewComponent extends CustomComponent{
 	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private GalleryImageController controller;
+
 	public GalleryImageViewComponent(Image img) {
+		controller = new GalleryImageController();
 		FileResource resource = new FileResource(new File(img.getPath()));
 		com.vaadin.ui.Image embeddedImage = new com.vaadin.ui.Image(img.getName(), resource);
 
@@ -35,6 +43,11 @@ public class GalleryImageViewComponent extends CustomComponent{
 		CheckBox viewStatus = new CheckBox("Public", img.getViewStatus());
 		viewStatus.addBlurListener(new BlurListener() {
 			
+			/**
+			 * 
+			 */
+			private static final long serialVersionUID = 1L;
+
 			@Override
 			public void blur(BlurEvent event) {
 				if(viewStatus.getValue()) {
@@ -44,7 +57,7 @@ public class GalleryImageViewComponent extends CustomComponent{
 					Notification.show("Image is public");
 				}
 				
-				//controller.changeViewStatus(viewStatus.getValue());
+				controller.changeViewStatus(viewStatus.getValue());
 			}
 		});
 		Label uploader = new Label("Uploader: " + img.getUploader().getUserName());

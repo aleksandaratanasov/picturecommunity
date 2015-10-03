@@ -21,8 +21,11 @@ import com.vaadin.ui.Alignment;
 
 @SuppressWarnings("serial")
 public class LoginView extends VerticalLayout implements View {
+	
+	private LoginController controller;
 
 	public LoginView(PicturecommunityMainController app) {
+		controller = new LoginController();
 		setSizeFull();
 		setSpacing(true);
 		Label label = new Label(
@@ -39,8 +42,7 @@ public class LoginView extends VerticalLayout implements View {
 			@Override
 			public void buttonClick(ClickEvent event) {
 				// Verify if user is present in the DB
-				LoginController model = new LoginController();
-				if (model.validate(username.getValue(), password.getValue())) {
+				if (controller.validate(username.getValue(), password.getValue())) {
 
 					//getUI().getSession().setAttribute("username", username);
 					//VaadinService.getCurrentRequest().getWrappedSession().setAttribute("username", username);

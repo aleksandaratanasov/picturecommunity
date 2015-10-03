@@ -1,11 +1,7 @@
 package com.example.picturecommunity.controller;
 
 import java.io.File;
-import java.io.IOException;
-import java.util.ArrayList;
 import java.util.HashSet;
-import java.util.Iterator;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 import java.util.Vector;
@@ -15,11 +11,8 @@ import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
-import javax.persistence.Table;
-
 import com.example.picturecommunity.model.Image;
 import com.example.picturecommunity.model.User;
-import com.sun.xml.internal.ws.message.EmptyMessageImpl;
 import com.vaadin.server.VaadinService;
 import com.vaadin.ui.Notification;
 
@@ -27,8 +20,6 @@ import com.vaadin.ui.Notification;
  * NOTES:
  * http://www.javacodegeeks.com/2013/11/efficiently-delete-data-with-jpa-and-hibernate.html
  * http://www.objectdb.com/java/jpa/persistence/store
- * findUserbyId -> entitymanager.find(User.class, id) -> abholen, löschen und dann als transaktion zurück schreiben
- *  -----------------------> updateUploads()
  */
 
 public class AdminController {
@@ -169,6 +160,7 @@ public class AdminController {
 		}
 		
 		// Check whether the user has been added to the contacts of other users and delete his entry if true
+		// TODO Find out how to delete contacts (issues with the FK constraints of my_user_my_user)
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
@@ -214,11 +206,6 @@ public class AdminController {
 		
 		// Remove from list of marked for deletion
 		usersForDeletion.remove((Long)userId);
-		
-		// Remove user from all other users who have him
-		// Query all users and see who has our user marked for deletion in their contacts
-		// ...
-		
 		
 		em.close();
 	}

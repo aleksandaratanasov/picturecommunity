@@ -2,15 +2,19 @@ package com.example.picturecommunity.controller;
 
 import java.io.File;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.OutputStream;
 import java.nio.file.Files;
 import java.nio.file.LinkOption;
 import java.nio.file.Paths;
 
+import javax.imageio.ImageIO;
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
+
+import org.apache.commons.io.FilenameUtils;
 
 import com.example.picturecommunity.model.Image;
 import com.example.picturecommunity.model.User;
@@ -25,12 +29,18 @@ import com.vaadin.ui.TextField;
 import com.vaadin.ui.Upload.Receiver;
 import com.vaadin.ui.Upload.SucceededEvent;
 import com.vaadin.ui.Upload.SucceededListener;
+
+import net.coobird.thumbnailator.Thumbnails;
+
 import com.vaadin.server.VaadinService;
 
 /**
  * Provides tools for managing images
  */
 public class ImageController implements Receiver, SucceededListener, ValueChangeListener {
+	
+	private final int THUMBNAIL_WIDTH = 128;
+	private final int THUMBNAIL_HEIGHT = 128;
 
 	private static final long serialVersionUID = 1L;
 	private static final String PERSISTENCE_UNIT_NAME = "picturecommunity";
@@ -73,37 +83,67 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 
 	@Override
 	public OutputStream receiveUpload(String filename, String mimeType) {
-		//String filepath = "/tmp/uploads/" + username + "/" + filename;
 		String filepath = VaadinService.getCurrent().getBaseDirectory().getAbsolutePath() + "/" + username + "/" + filename;
 		
 		//Workaround for file duplicates (User bekommt im Moment nix davon mit)
 		if(Files.exists(Paths.get(filepath), LinkOption.NOFOLLOW_LINKS)) fileExists = true;
 		
 		// Create upload stream
-	       FileOutputStream fos = null; // Stream to write to
-	       try {
-	           // Open the file for writing.
-	           file = new File(filepath);
-	           fos = new FileOutputStream(file);
-	       } catch (final java.io.FileNotFoundException e) {
-	           new Notification("Could not open file",
-	                            e.getMessage(),
-	                            Notification.Type.ERROR_MESSAGE)
-	               .show(Page.getCurrent());
-	           return null;
-	        }
-	        return fos; // Return the output stream to write to
+	   FileOutputStream fos = null; // Stream to write to
+	   try {
+	       // Open the file for writing.
+	       file = new File(filepath);
+	       fos = new FileOutputStream(file);
+	   } catch (final java.io.FileNotFoundException e) {
+	       new Notification("Could not open file",
+	                        e.getMessage(),
+	                        Notification.Type.ERROR_MESSAGE)
+	           .show(Page.getCurrent());
+	       return null;
+	   }
+	   
+       return fos; // Return the output stream to write to
 	}
 	
 	public void createImage(File file, String comment, String name, boolean viewstatus, User user ){
 		if(file.exists()){
+			
+			// Create image from original file
+			Image i = new Image(user, file.getPath(), "", (name != "") ? name : file.getName(), viewstatus, comment);
+			
+		    // Create thumbnail
+			try {
+				Thumbnails.of(file)
+				.size(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
+				.toFile(file.getPath()
+						.replace(
+								new String("." + FilenameUtils.getExtension(file.getPath())),
+								new String("_thumbnail." + FilenameUtils.getExtension(file.getPath()))
+								)
+						);
+			}
+			catch(IOException ex) {
+				System.out.println("Failed to create thumbnail");
+			}
+			
+			i.setPathThumbnail(file.getPath()
+					.replace(
+							new String("." + FilenameUtils.getExtension(file.getPath())),
+							new String("_thumbnail." + FilenameUtils.getExtension(file.getPath()))
+							)
+					);
+			
+			//System.out.println("ORIGINAL IMAGE: " + i.getPath());
+			//System.out.println("THUMBNAIL IMAGE: " + i.getPathThumbnail());
+			
 			factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 			EntityManager em = factory.createEntityManager();
 			try{
 				EntityTransaction entr = em.getTransaction();
 				entr.begin();
 					//Image i = new Image();
-				    Image i = new Image(user, file.getPath(), (name != "") ? name : file.getName(), viewstatus, comment);
+					//Image i = new Image(user, file.getPath(), "", (name != "") ? name : file.getName(), viewstatus, comment);
+				    
 					/*i.setName((name != "") ? name : file.getName());
 					i.setPath(file.getPath());
 					i.setUploader(user);

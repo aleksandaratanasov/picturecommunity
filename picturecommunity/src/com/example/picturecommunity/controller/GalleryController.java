@@ -1,39 +1,32 @@
 package com.example.picturecommunity.controller;
 
-import javax.persistence.EntityManager;
-import javax.persistence.EntityManagerFactory;
-import javax.persistence.EntityTransaction;
+import java.util.LinkedList;
 
+import javax.persistence.EntityManagerFactory;
 import com.example.picturecommunity.model.Image;
+import com.example.picturecommunity.model.User;
 import com.example.picturecommunity.view.GalleryImageViewComponent;
-import com.vaadin.ui.Notification;
 
 public class GalleryController {
 	
 	private static final String PERSISTENCE_UNIT_NAME = "picturecommunity";
 	private static EntityManagerFactory factory;
+	private User current_user;
 	
-	public GalleryController() {
-		
+	public GalleryController(String username) {
+		current_user = UserController.findUserbyName(username);
 	}
 	
 	// Called in GalleryViewComponent when a GalleryImageViewComponents is to be added
-	public GalleryImageViewComponent addGalleryImage(Image img) {
+	/*public GalleryImageViewComponent addGalleryImage(Image img) {
 		return new GalleryImageViewComponent(img);
-	}
+	}*/
 	
-	public void changeViewStatus(boolean viewStatus, GalleryImageViewComponent gimg) {
-		EntityManager em = factory.createEntityManager();
-		
-		try {
-			EntityTransaction tx = em.getTransaction();
-			tx.begin();
-				
-			tx.commit();
+	public LinkedList<GalleryImageViewComponent> getImages() {
+		LinkedList<GalleryImageViewComponent> images = new LinkedList<GalleryImageViewComponent>();
+		for (Image img : current_user.getImages()) {
+			images.add(new GalleryImageViewComponent(img));
 		}
-		catch(Exception ex) {
-			Notification.show(ex.getMessage());
-		}
-		em.close();
+		return images;
 	}
 }

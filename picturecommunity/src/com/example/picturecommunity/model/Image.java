@@ -19,6 +19,7 @@ public class Image implements Serializable {
 	private Long id;
 
 	private String path;
+	private String pathThumbnail;
 	private String name;
 	private String comment;
 	private Instant uploadTime;
@@ -36,9 +37,10 @@ public class Image implements Serializable {
 		this(path, name, viewStatus, "");
 	}*/
 	
-	public Image(User uploader, String path, String name, boolean viewStatus, String comment) {
+	public Image(User uploader, String path, String pathThumbnail, String name, boolean viewStatus, String comment) {
 		this.uploader = uploader;
 		this.path = path;
+		this.pathThumbnail = pathThumbnail;
 		this.name = name;
 		this.viewStatus = viewStatus;
 		this.comment = comment;
@@ -55,6 +57,14 @@ public class Image implements Serializable {
 	
 	public void setPath(String path){
 		this.path = path;
+	}
+	
+	public String getPathThumbnail() {
+		return pathThumbnail;
+	}
+
+	public void setPathThumbnail(String pathThumbnail) {
+		this.pathThumbnail = pathThumbnail;
 	}
 	
 	public String getName() {
@@ -96,7 +106,4 @@ public class Image implements Serializable {
 			uploader.setUploads(uploader.getImages().size());
 		}
 	}
-	
-	
-
 }

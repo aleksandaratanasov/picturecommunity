@@ -8,11 +8,13 @@ import com.vaadin.ui.Notification;
 import com.vaadin.ui.VerticalLayout;
 
 /*
- * TODO
- * 1)insert JFreeChart with selectable number of users with highest upload numbers (for example: top 5, top 10 and top 20) 
- * 2)delete user(s) from a panel
- * 		- delete selected user's image gallery (incl. files)
- * 		- delete contact entry in list of contact of all users who have the deleted user as a contact
+ * TODO 
+ * 1)delete user(s) from a panel
+ * 		- delete selected user's image gallery (incl. files)												DONE
+ * 		- delete contact entry in list of contact of all users who have the deleted user as a contact 		PENDING
+ * 3)fix table and chart refresh - https://vaadin.com/book/vaadin7/-/page/advanced.push.html
+ * Right now the  Admin view components wait for the next server request to update their content. Even refreshing the web page
+ * doesn't work so if a user changes (number of uploads for example) or is deleted the changes are not displayed immediately!
  */
 
 @SuppressWarnings("serial")
