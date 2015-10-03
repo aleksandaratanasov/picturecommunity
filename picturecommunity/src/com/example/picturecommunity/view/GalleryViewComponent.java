@@ -23,6 +23,7 @@ public class GalleryViewComponent extends Panel {
 		VerticalLayout layout = new VerticalLayout();
 		//images = new LinkedList<GalleryImageViewComponent>();
 		controller = new GalleryController(user);
+		if(controller.getCurrentUser().getImages().size() == 0) return;
 		//images = new IndexedContainer(controller.getImages());
 		//gallery = new Grid(images);
 		//gallery.addColumn(images, GalleryImageViewComponent.class);
@@ -32,7 +33,9 @@ public class GalleryViewComponent extends Panel {
 		gallery.addContainerProperty("Image", GalleryImageViewComponent.class, null);
 		
 		for (GalleryImageViewComponent item : controller.getImages()) {
-			gallery.addItem(item);
+			Object itemId = gallery.addItem();
+			System.out.println("Adding image \"" + item.getImage().getPath() + "\"");
+			gallery.getItem(itemId).getItemProperty("Image").setValue(item);
 		}
 		
 		layout.addComponent(gallery);

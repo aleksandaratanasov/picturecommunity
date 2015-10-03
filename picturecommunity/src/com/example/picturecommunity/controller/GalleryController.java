@@ -22,6 +22,10 @@ public class GalleryController {
 		return new GalleryImageViewComponent(img);
 	}*/
 	
+	public User getCurrentUser() {
+		return current_user;
+	}
+	
 	public LinkedList<GalleryImageViewComponent> getImages() {
 		LinkedList<GalleryImageViewComponent> images = new LinkedList<GalleryImageViewComponent>();
 		for (Image img : current_user.getImages()) {

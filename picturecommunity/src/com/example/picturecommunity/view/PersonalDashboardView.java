@@ -54,7 +54,7 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 			sideMenu.addComponent(fvc);
 			sideMenu.addComponent(iuvc);
 			mainView.addComponent(sideMenu);
-			//mainView.addComponent(personal_gallery);	// Uncomment when ready or testing
+			mainView.addComponent(personal_gallery);	// Uncomment when ready or testing
 			addComponent(mainView);
 			initialTrigger = false;
 		}

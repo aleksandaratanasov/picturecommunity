@@ -29,8 +29,10 @@ public class GalleryImageViewComponent extends CustomComponent{
 	 */
 	private static final long serialVersionUID = 1L;
 	private GalleryImageController controller;
+	private Image img;
 
-	public GalleryImageViewComponent(Image img) {
+	public GalleryImageViewComponent(Image _img) {
+		img = _img;
 		controller = new GalleryImageController();
 		FileResource resource = new FileResource(new File(img.getPath()));
 		com.vaadin.ui.Image embeddedImage = new com.vaadin.ui.Image(img.getName(), resource);
@@ -72,5 +74,9 @@ public class GalleryImageViewComponent extends CustomComponent{
 		layout.setSpacing(true);
 		setSizeUndefined();
 		setCompositionRoot(layout);
+	}
+	
+	public Image getImage() {
+		return img;
 	}
 }
