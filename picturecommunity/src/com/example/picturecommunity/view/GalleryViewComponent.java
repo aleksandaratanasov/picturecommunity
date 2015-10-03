@@ -4,8 +4,13 @@ import com.vaadin.data.util.IndexedContainer;
 import com.vaadin.ui.Grid;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.Table;
+import com.vaadin.ui.Table.RowHeaderMode;
 import com.vaadin.ui.VerticalLayout;
+
+import org.jfree.data.contour.ContourDataset;
+
 import com.example.picturecommunity.controller.GalleryController;
+import com.example.picturecommunity.model.Image;
 import com.example.picturecommunity.model.User;
 import com.example.picturecommunity.view.GalleryImageViewComponent;
 
@@ -29,7 +34,11 @@ public class GalleryViewComponent extends Panel {
 		//gallery.addColumn(images, GalleryImageViewComponent.class);
 		gallery = new Table("Gallery");
 		gallery.setImmediate(true);
-		gallery.setSizeFull();
+		//gallery.setSizeFull();
+		//gallery.setHeight("100%");
+		//gallery.setSizeUndefined();
+		gallery.setPageLength(controller.getCurrentUser().getImages().size());
+		gallery.setRowHeaderMode(RowHeaderMode.HIDDEN);
 		gallery.addContainerProperty("Image", GalleryImageViewComponent.class, null);
 		
 		for (GalleryImageViewComponent item : controller.getImages()) {
@@ -37,7 +46,8 @@ public class GalleryViewComponent extends Panel {
 			System.out.println("Adding image \"" + item.getImage().getPath() + "\"");
 			gallery.getItem(itemId).getItemProperty("Image").setValue(item);
 		}
-		
+
 		layout.addComponent(gallery);
+		setContent(layout);
 	}
 }

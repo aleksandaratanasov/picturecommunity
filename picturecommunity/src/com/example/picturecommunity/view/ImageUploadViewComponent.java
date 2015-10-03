@@ -8,6 +8,7 @@ import com.vaadin.ui.Alignment;
 import com.vaadin.ui.CheckBox;
 import com.vaadin.ui.CustomComponent;
 import com.vaadin.ui.HorizontalLayout;
+import com.vaadin.ui.Label;
 import com.vaadin.ui.Panel;
 import com.vaadin.ui.TextField;
 import com.vaadin.ui.Upload;
@@ -20,7 +21,7 @@ public class ImageUploadViewComponent extends CustomComponent {
 	
 	public ImageUploadViewComponent(){
 		// FIXME Alignment looks like shit
-		VerticalLayout layout = new VerticalLayout();
+		HorizontalLayout layout = new HorizontalLayout();
 		
 		//Creating Upload
 		Upload imageUpload = new Upload("Upload your Image here", receiver);
@@ -55,21 +56,20 @@ public class ImageUploadViewComponent extends CustomComponent {
 		CheckBox viewstatus = new CheckBox("public Picture");
 		viewstatus.addValueChangeListener(receiver);
 
-		//Comment and name text fields are aligned horizontally
-		// TODO Sadly the Upload component takes too much space horizontally. If the ImageUpload component is to be vertical we need a custom Upload component
-		HorizontalLayout uploadTextSettings = new HorizontalLayout();
-		uploadTextSettings.addComponent(name);
-		uploadTextSettings.addComponent(comment);
-		VerticalLayout uploadSettings = new VerticalLayout();
-		uploadSettings.addComponent(uploadTextSettings);
+		// Place comment, name and view status in a single layout
+		HorizontalLayout uploadSettings = new HorizontalLayout();
+		uploadSettings.addComponent(new Label(" ")); // Creates some blank space between the components
+		uploadSettings.addComponent(name);
+		uploadSettings.addComponent(new Label(" ")); // Creates some blank space between the components
+		uploadSettings.addComponent(comment);
+		uploadSettings.addComponent(new Label(" ")); // Creates some blank space between the components
 		uploadSettings.addComponent(viewstatus);
 		//uploadData.setComponentAlignment(viewstatus, Alignment.BOTTOM_RIGHT);
 		uploadSettings.setSpacing(true);
 
 		layout.addComponent(imageUpload);
-		//layout.setComponentAlignment(imageUpload, Alignment.BOTTOM_LEFT );
+		layout.addComponent(new Label(" ")); // Creates some blank space between the components
 		layout.addComponent(uploadSettings);
-		//layout.setComponentAlignment(uploadData, Alignment.BOTTOM_LEFT);
 
 		setCompositionRoot(layout);
 	}

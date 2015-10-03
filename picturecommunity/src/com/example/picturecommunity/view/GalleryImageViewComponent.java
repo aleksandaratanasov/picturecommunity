@@ -29,26 +29,24 @@ public class GalleryImageViewComponent extends CustomComponent{
 	 */
 	private static final long serialVersionUID = 1L;
 	private GalleryImageController controller;
-	private Image img;
 
-	public GalleryImageViewComponent(Image _img) {
-		img = _img;
-		controller = new GalleryImageController();
-		FileResource resource = new FileResource(new File(img.getPath()));
-		com.vaadin.ui.Image embeddedImage = new com.vaadin.ui.Image(img.getName(), resource);
+	public GalleryImageViewComponent(Image img) {
+		// Add the metadata of the image (comment, name, uploader)
+		controller = new GalleryImageController(img);
+		// Load the image file and create a Vaadin Image
+		FileResource resource = new FileResource(new File(controller.getImage().getPath()));
+		com.vaadin.ui.Image embeddedImage = new com.vaadin.ui.Image(controller.getImage().getName(), resource);
 
+		// Create additional components and add all to the layout
 		VerticalLayout layout = new VerticalLayout();
 		layout.addComponent(embeddedImage);
-		layout.addComponent(new Label(img.getComment()));
+		layout.addComponent(new Label(controller.getImage().getComment()));
 		HorizontalLayout uploadStatsAndViewStatus = new HorizontalLayout();
 		//CheckBox viewStatus = new CheckBox("Private");
-		CheckBox viewStatus = new CheckBox("Public", img.getViewStatus());
+		CheckBox viewStatus = new CheckBox("Public", controller.getImage().getViewStatus());
 		viewStatus.addBlurListener(new BlurListener() {
-			
-			/**
-			 * 
-			 */
-			private static final long serialVersionUID = 1L;
+
+			private static final long serialVersionUID = 1814712743184783174L;
 
 			@Override
 			public void blur(BlurEvent event) {
@@ -62,7 +60,7 @@ public class GalleryImageViewComponent extends CustomComponent{
 				controller.changeViewStatus(viewStatus.getValue());
 			}
 		});
-		Label uploader = new Label("Uploader: " + img.getUploader().getUserName());
+		Label uploader = new Label("Uploader: " + controller.getImage().getUploader().getUserName());
 		uploadStatsAndViewStatus.addComponent(uploader);
 		uploadStatsAndViewStatus.setComponentAlignment(uploader, Alignment.MIDDLE_LEFT);
 		uploadStatsAndViewStatus.addComponent(viewStatus);
@@ -77,6 +75,6 @@ public class GalleryImageViewComponent extends CustomComponent{
 	}
 	
 	public Image getImage() {
-		return img;
+		return controller.getImage();
 	}
 }

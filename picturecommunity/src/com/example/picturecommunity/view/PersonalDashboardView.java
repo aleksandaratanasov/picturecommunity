@@ -15,9 +15,35 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 public class PersonalDashboardView extends VerticalLayout implements View {
+
+	/*
+	 * +----------------------------------------------+
+	 * |				  MAIN MENU					  |-------------TOP MENU
+	 * +----------------------------------------------+
+	 * +----------------------------------------------+
+	 * | +-------------+ +--------------------------+ |       /-----SIDE MENU + GALLERY LAYOUT
+	 * | |             | |                          | |      /
+	 * | |  CONTACTS   | |                          | |     /
+	 * | |    LIST     | |          GALLERY         |-|----/
+	 * | |    +        | |                          | |-------------MAIN LAYOUT
+	 * | |  GREETING   | |                          | |
+	 * | +-------------+ +--------------------------+ |
+	 * | +------|-----------------------------------+ |
+	 * | |      |        IMAGE UPLOADER             | |
+	 * | +------|-----------------------------------+ |
+	 * +--------|-------------------------------------+
+	 * 			|
+	 * 			|
+	 * 			\
+	 * 			 \-----SIDE MENU LAYOUT
+	 * 
+	 */
 	
-	HorizontalLayout mainView;
-	VerticalLayout sideMenu;
+	VerticalLayout topLevelLayout;				// Contains top menu and main layout
+	VerticalLayout mainView;					// Contains contacts, gallery and image uploader
+	HorizontalLayout sideMenuAndGalleryView;	// Contains contacts+greeting and gallery
+	VerticalLayout sideMenu;					// Contains contacts and a user greeting
+	
 	MenuViewComponent mvc;
 	FriendsViewComponent fvc;
 	ImageUploadViewComponent iuvc;
@@ -30,10 +56,14 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 	public PersonalDashboardView(PicturecommunityMainController app) {
 		setSizeFull();
 		setSpacing(true);
-		mvc = new MenuViewComponent(false);
-		mainView = new HorizontalLayout();
+		
+		topLevelLayout = new VerticalLayout();
+		mainView = new VerticalLayout();
+		sideMenuAndGalleryView = new HorizontalLayout();
 		sideMenu = new VerticalLayout();
-		addComponent(mvc);
+		
+		mvc = new MenuViewComponent(false);
+		addComponent(topLevelLayout);
 	}
 
 	@Override
@@ -45,17 +75,30 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 		fvc = new FriendsViewComponent();
 		iuvc = new ImageUploadViewComponent();
 		personal_gallery = new GalleryViewComponent(username);
+		//personal_gallery.setSizeFull();
+		//personal_gallery.setHeight("100%");
 		
 		// One time trigger for adding the required components upon entering the view
 		// After that only the objects that the components contains will be updated (see above)
 		if(initialTrigger) {
 			controller = new PersonalDashboardController();
+			
+			// Populate the side menu
 			sideMenu.addComponent(greeting);
 			sideMenu.addComponent(fvc);
-			sideMenu.addComponent(iuvc);
-			mainView.addComponent(sideMenu);
-			mainView.addComponent(personal_gallery);	// Uncomment when ready or testing
-			addComponent(mainView);
+			// Populate the sideMenu + gallery view
+			sideMenuAndGalleryView.addComponent(sideMenu);
+			sideMenuAndGalleryView.addComponent(personal_gallery);
+			// Populate the main view
+			mainView.addComponent(sideMenuAndGalleryView);
+			mainView.addComponent(iuvc);
+			// Populate the top level layout
+			topLevelLayout.addComponent(mvc);
+			topLevelLayout.addComponent(mainView);
+			// Set panel's layout to top level layout
+			addComponent(topLevelLayout);
+			
+			// Deactivate component insertion
 			initialTrigger = false;
 		}
 		
