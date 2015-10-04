@@ -31,6 +31,11 @@ public class GalleryImageViewComponent extends CustomComponent{
 	private GalleryImageController controller;
 
 	public GalleryImageViewComponent(Image img) {
+		
+		// Vaadin doesn't allow adding null as a component (for good reason) so we have
+		// to create a representation of an empty cell
+		if(img == null) return;
+		
 		// Add the metadata of the image (comment, name, uploader)
 		controller = new GalleryImageController(img);
 		// Load the image file and create a Vaadin Image

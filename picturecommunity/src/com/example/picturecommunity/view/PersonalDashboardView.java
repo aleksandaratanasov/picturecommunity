@@ -75,9 +75,7 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 		fvc = new FriendsViewComponent();
 		iuvc = new ImageUploadViewComponent();
 		personal_gallery = new GalleryViewComponent(username);
-		//personal_gallery.setSizeFull();
-		//personal_gallery.setHeight("100%");
-		
+
 		// One time trigger for adding the required components upon entering the view
 		// After that only the objects that the components contains will be updated (see above)
 		if(initialTrigger) {
@@ -101,6 +99,12 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 			// Deactivate component insertion
 			initialTrigger = false;
 		}
+		
+		/*sideMenu.replaceComponent(fvc, fvc);
+		sideMenuAndGalleryView.replaceComponent(sideMenu, sideMenu);
+		sideMenuAndGalleryView.replaceComponent(personal_gallery, personal_gallery);
+		mainView.replaceComponent(sideMenuAndGalleryView, sideMenuAndGalleryView);
+		topLevelLayout.replaceComponent(mainView, mainView);*/
 		
 		// Move this to the controller and populate GalleryViewComponent using "getAllGalleryImageComponents()" (returns a list of components
 		// Code below is currently only FOR TESTING purposes
