@@ -17,7 +17,7 @@
 // Affects the visual appearance of all components
 //$v-gradient: v-linear 8%;
 //$v-bevel-depth: 30%;
-//$v-shadow-opacity: 5%;
+$v-shadow-opacity: 5%;
 
 // Defines colors for indicating status (focus, success, failure)
 //$v-focus-color: valo-focus-color(); // Calculates a suitable color automatically
@@ -39,4 +39,17 @@
   .v-horizontal > .v-spacing {
     width: 10px;
   }
+  
+  .v-popupview {}
+  .v-overlay-container {
+    .v-popupview-popup {
+      .popupContent { }
+    }
+  }
+  
+  .image-component {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+   }
 }
