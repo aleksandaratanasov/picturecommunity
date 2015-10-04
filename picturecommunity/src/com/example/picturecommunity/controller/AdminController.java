@@ -172,12 +172,13 @@ public class AdminController {
 				relatedUser.getContacts().remove(u.getId());
 			  }*/
 			  // Delete all entries of other users that have the selected user in their contacts
-			  Query qDeleteAddedBy = em.createNativeQuery(
+			  // TODO Use access the JPA-style (see the change of viewStatus in GalleryImageViewController)
+			  /*Query qDeleteAddedBy = em.createNativeQuery(
 					  "DELETE FROM my_user_my_user WHERE contacts_ID = :id").setParameter("id", u.getId());
   			  // Delete all entries of selected user that contain his contacts
 			  Query qOwn = em.createNativeQuery( //em.createQuery(
 					  "DELETE FROM my_user_my_user WHERE User_ID = :id").setParameter("id", u.getId());
-					  
+			  */		  
 			tx.commit();
 		}
 		catch(Exception ex) {

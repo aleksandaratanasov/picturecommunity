@@ -24,9 +24,13 @@ import org.jfree.chart.axis.CategoryLabelPositions;
 import org.jfree.chart.axis.NumberAxis;
 import org.jfree.chart.plot.CategoryPlot;
 import org.jfree.chart.plot.PlotOrientation;
+import org.jfree.chart.renderer.category.BarPainter;
 import org.jfree.chart.renderer.category.BarRenderer;
+import org.jfree.chart.renderer.category.StandardBarPainter;
 import org.jfree.data.category.CategoryDataset;
 import org.jfree.data.category.DefaultCategoryDataset;
+import org.jfree.ui.GradientPaintTransformType;
+import org.jfree.ui.StandardGradientPaintTransformer;
 import org.vaadin.addon.JFreeChartWrapper;
 
 import com.example.picturecommunity.controller.AdminController;
@@ -59,22 +63,6 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 		numOfUsers.addItem("15");
 		numOfUsers.select("5");
 		
-		//Notification.show(controller.getUploadStats(1).get(0).getUserName());
-		//Notification.show(controller.getUploadStats(5).toString());
-		/*Button TESTUPSTATS = new Button("TEST UPSTATS");
-		TESTUPSTATS.addClickListener(new Button.ClickListener() {
-			
-			@Override
-			public void buttonClick(ClickEvent event) {
-				String stats = "";
-				for (User u : controller.getUploadStats(10)) {
-					stats += "[user: " + u.getUserName() + "|uploads: " + u.getUploads() + "]\n";
-				}
-				Notification.show(stats);
-			}
-		});
-		layout.addComponent(TESTUPSTATS);*/
-		
 		layout.addComponent(numOfUsers);
 		jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
         layout.addComponent(jfcwc);	
@@ -85,19 +73,11 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 				//layout.removeComponent(jfcwc);
 				layout.removeComponent(jfcwc);
 				jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
+				//jfcwc.refresh();
 		        layout.addComponent(jfcwc);	
 			}
 		};
-		/*JFreeChartWrapperContainer jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
-		ValueChangeListener listener = new ValueChangeListener() {
-			public void valueChange(ValueChangeEvent event) {
-		        Notification.show("Selected value " + numOfUsers.getValue().toString());
-		        
-		        layout.removeComponent(jfcwc);
-		        jfcwc = new JFreeChartWrapperContainer(Integer.parseInt((String) numOfUsers.getValue()));
-		        layout.addComponent(jfcwc);
-		    }
-		};*/
+
 		numOfUsers.addValueChangeListener(listener);
 		
 		//layout.addComponent(new JFreeChartWrapperContainer()); // add listener for the combobox, which updates automatically the JFCWcontainer with the selected value (5, 10 or 15)
@@ -109,10 +89,16 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 	public class JFreeChartWrapperContainer extends Panel {
 		
 		private int numOfUploads;
+		private JFreeChart chart;
+		private JFreeChartWrapper jfcw;
 		
 		public JFreeChartWrapperContainer(int numOfUploads) {
 			this.numOfUploads = numOfUploads;
 			setContent(createJFCW());
+		}
+		
+		public void refresh() {
+			chart.fireChartChanged();
 		}
 		
 		private CategoryDataset createDataset() {
@@ -132,8 +118,10 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 		}
 		
 		public JFreeChartWrapper createJFCW() {
-			JFreeChart chart = createChart(createDataset());
-			JFreeChartWrapper jfcw = new JFreeChartWrapper(chart) {
+			//JFreeChart chart = createChart(createDataset());
+			chart = createChart(createDataset());
+			//JFreeChartWrapper jfcw = new JFreeChartWrapper(chart) {
+			jfcw = new JFreeChartWrapper(chart) {
 				@Override
 				public void attach() {
 					super.attach();
@@ -156,6 +144,7 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 			
 			// additional customization
 			chart.setBackgroundPaint(Color.white);
+			chart.setAntiAlias(true);
 			
 			// get a reference to the plot for further customization
 			CategoryPlot plot = (CategoryPlot)chart.getPlot();
@@ -168,10 +157,12 @@ public class UploadStatisticsViewComponent extends CustomComponent {
 			final NumberAxis rangeAxis = (NumberAxis) plot.getRangeAxis();
 			rangeAxis.setStandardTickUnits(NumberAxis.createIntegerTickUnits());
 			
-			// disable bar outlines
+			// disable bar outlines, shadows etc.
 			BarRenderer renderer = (BarRenderer)plot.getRenderer();
 			renderer.setDrawBarOutline(false);
 			renderer.setShadowVisible(false);
+			renderer.setDefaultBarPainter(new StandardBarPainter());
+			((BarRenderer) plot.getRenderer()).setBarPainter(new StandardBarPainter());
 			
 			// set gradient paints for series
 			//GradientPaint gp0 = new GradientPaint(0.0f, 0.0f, Color.blue,  0.0f, 0.0f, new Color(0, 0, 64));
