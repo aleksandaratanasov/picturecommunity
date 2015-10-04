@@ -26,17 +26,17 @@ public class GalleryController {
 		
 		if(numOfImages == 0) return;
 		
-		// Currently the maximum number of GalleryImageViewComponents that can be displayed horizontally is 6 (this should be made adaptable to the size of the browser window)
+		// Currently the maximum number of GalleryImageViewComponents that can be displayed horizontally is 4 (this should be made adaptable to the size of the browser window)
 		// Case 1: 
-		if(numOfImages < 7) {
+		if(numOfImages < 5) {
 			height = 1;
 			width = numOfImages;
 		}
 		else {
 			for(int i = 0; i < numOfImages; i++) {
-				if(i % 6 == 0) height++;
+				if(i % 4 == 0) height++;
 			}
-			width = 6;
+			width = 4;
 		}
 	}
 	

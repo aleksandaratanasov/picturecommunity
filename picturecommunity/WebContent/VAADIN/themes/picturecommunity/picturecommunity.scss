@@ -32,5 +32,11 @@
 @mixin picturecommunity {
   @include valo;
 
-  // Insert your own theme rules here
+  .v-vertical > .v-spacing {
+    height: 20px;
+  }
+  
+  .v-horizontal > .v-spacing {
+    width: 10px;
+  }
 }
