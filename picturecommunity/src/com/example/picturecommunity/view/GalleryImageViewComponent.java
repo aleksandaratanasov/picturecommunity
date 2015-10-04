@@ -34,8 +34,10 @@ public class GalleryImageViewComponent extends CustomComponent{
 		// Add the metadata of the image (comment, name, uploader)
 		controller = new GalleryImageController(img);
 		// Load the image file and create a Vaadin Image
-		FileResource resource = new FileResource(new File(controller.getImage().getPath()));
-		com.vaadin.ui.Image embeddedImage = new com.vaadin.ui.Image(controller.getImage().getName(), resource);
+		FileResource resource = new FileResource(new File(controller.getImage().getPathThumbnail()));
+		com.vaadin.ui.Image embeddedImage = new com.vaadin.ui.Image(
+				controller.getImage().getName() + "\t(" + (int)controller.getImage().getWidth() + "x" + (int)controller.getImage().getHeight() + ")",
+				resource);
 
 		// Create additional components and add all to the layout
 		VerticalLayout layout = new VerticalLayout();

@@ -1,5 +1,6 @@
 package com.example.picturecommunity.controller;
 
+import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -21,6 +22,7 @@ import com.example.picturecommunity.model.User;
 import com.vaadin.data.Property;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
+import com.vaadin.server.FileResource;
 import com.vaadin.server.Page;
 import com.vaadin.server.VaadinSession;
 import com.vaadin.ui.CheckBox;
@@ -107,9 +109,25 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 	
 	public void createImage(File file, String comment, String name, boolean viewstatus, User user ){
 		if(file.exists()){
-			
-			// Create image from original file
-			Image i = new Image(user, file.getPath(), "", (name != "") ? name : file.getName(), viewstatus, comment);
+			// Create a temporary BufferedImage image to retrieve some data (such as dimensions) from the image file
+			// Vaadin Image is a no go here due to the inability to extract dimension from a component on the server side
+			final BufferedImage temp_i;
+			try {
+				temp_i = ImageIO.read(new File(file.getPath()));
+			}
+			catch(Exception e) {
+				System.out.println("Failed to read image file");
+				return;
+			}
+			// Create image model object
+			Image i = new Image(
+					user,
+					file.getPath(),
+					"",
+					temp_i.getWidth(), temp_i.getHeight(),
+					(name != "") ? name : file.getName(),
+					viewstatus,
+					comment);
 			
 		    // Create thumbnail
 			try {
@@ -128,6 +146,7 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 			}
 			catch(IOException ex) {
 				System.out.println("Failed to create thumbnail");
+				return;
 			}
 			
 			i.setPathThumbnail(file.getPath()

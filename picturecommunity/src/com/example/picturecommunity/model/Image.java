@@ -20,6 +20,8 @@ public class Image implements Serializable{
 
 	private String path;
 	private String pathThumbnail;
+	private float width;				// Width of the full image (not thumbnail)
+	private float height;				// Height of the full image (not thumbnail) 
 	private String name;
 	private String comment;
 	private Instant uploadTime;
@@ -37,10 +39,12 @@ public class Image implements Serializable{
 		this(path, name, viewStatus, "");
 	}*/
 	
-	public Image(User uploader, String path, String pathThumbnail, String name, boolean viewStatus, String comment) {
+	public Image(User uploader, String path, String pathThumbnail, float widthOriginal, float heightOriginal, String name, boolean viewStatus, String comment) {
 		this.uploader = uploader;
 		this.path = path;
 		this.pathThumbnail = pathThumbnail;
+		width = widthOriginal;
+		height = heightOriginal;
 		this.name = name;
 		this.viewStatus = viewStatus;
 		this.comment = comment;
@@ -65,6 +69,14 @@ public class Image implements Serializable{
 
 	public void setPathThumbnail(String pathThumbnail) {
 		this.pathThumbnail = pathThumbnail;
+	}
+	
+	public float getWidth() {
+		return width;
+	}
+
+	public float getHeight() {
+		return height;
 	}
 	
 	public String getName() {
