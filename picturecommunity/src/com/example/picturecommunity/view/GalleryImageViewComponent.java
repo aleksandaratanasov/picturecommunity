@@ -69,9 +69,10 @@ public class GalleryImageViewComponent extends CustomComponent{
 		});
 		Label uploader = new Label("Uploader: " + controller.getImage().getUploader().getUserName());
 		uploadStatsAndViewStatus.addComponent(uploader);
-		uploadStatsAndViewStatus.setComponentAlignment(uploader, Alignment.MIDDLE_LEFT);
+		uploadStatsAndViewStatus.setComponentAlignment(uploader, Alignment.BOTTOM_LEFT);
+		uploadStatsAndViewStatus.addComponent(new Label(" "));
 		uploadStatsAndViewStatus.addComponent(viewStatus);
-		uploadStatsAndViewStatus.setComponentAlignment(viewStatus, Alignment.MIDDLE_RIGHT);
+		uploadStatsAndViewStatus.setComponentAlignment(viewStatus, Alignment.BOTTOM_RIGHT);
 		//uploadStatsAndViewStatus.addComponent(new Label(img.getUploadTimeAsString()));
 		//System.out.println("UPLOAD TIME STRING: " + img.getUploadTimeAsString());
 		layout.addComponent(uploadStatsAndViewStatus);

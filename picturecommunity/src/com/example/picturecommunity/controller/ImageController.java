@@ -132,9 +132,6 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 		    // Create thumbnail
 			try {
 				// TODO Add adaptive resizing here (first need to change the Image model to actually be able to get the dimensions of the image)
-				int maxWidth = THUMBNAIL_WIDTH;
-				int maxHeight = THUMBNAIL_HEIGHT;
-				//double ratio = maxWidth / i.getWidth();
 				Thumbnails.of(file)
 				.size(THUMBNAIL_WIDTH, THUMBNAIL_HEIGHT)
 				.toFile(file.getPath()
