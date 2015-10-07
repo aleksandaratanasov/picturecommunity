@@ -1,5 +1,6 @@
 package com.example.picturecommunity.view;
 
+import com.example.picturecommunity.controller.Broadcaster;
 import com.example.picturecommunity.controller.PicturecommunityMainController;
 import com.example.picturecommunity.controller.LoginController;
 import com.vaadin.shared.ui.label.ContentMode;
@@ -43,7 +44,7 @@ public class LoginView extends VerticalLayout implements View {
 			public void buttonClick(ClickEvent event) {
 				// Verify if user is present in the DB
 				if (controller.validate(username.getValue(), password.getValue())) {
-
+					Broadcaster.broadcast(username.getValue(), "Online");
 					//getUI().getSession().setAttribute("username", username);
 					//VaadinService.getCurrentRequest().getWrappedSession().setAttribute("username", username);
 					// check, if user is an admin

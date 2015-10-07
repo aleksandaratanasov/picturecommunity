@@ -7,6 +7,7 @@ import javax.persistence.Persistence;
 import javax.persistence.Query;
 
 import com.example.picturecommunity.model.User;
+import com.vaadin.server.VaadinSession;
 
 public class UserController {
 	
@@ -58,5 +59,23 @@ public class UserController {
 			em.close();
 		}
 	}
-	
+	public static void updateCurrentUserStatus(String status) {
+		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+		EntityManager em = factory.createEntityManager();
+		String username = (String)VaadinSession.getCurrent().getAttribute("username");
+		Query q = em.createQuery("SELECT u FROM User u WHERE u.username = :user");
+		q.setParameter("user", username);
+		try{	
+			User user =(User) q.getSingleResult();
+			
+			EntityTransaction entr =em.getTransaction();
+			entr.begin();
+			user.setStatus(status);
+			entr.commit();
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+		}finally {
+			em.close();
+		}
+	}
 }

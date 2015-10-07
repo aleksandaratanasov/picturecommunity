@@ -1,7 +1,12 @@
 package com.example.picturecommunity.view;
 
+import javax.persistence.EntityTransaction;
+
+import com.example.picturecommunity.controller.Broadcaster;
 import com.example.picturecommunity.controller.PicturecommunityMainController;
+import com.example.picturecommunity.controller.UserController;
 import com.vaadin.annotations.PreserveOnRefresh;
+import com.vaadin.server.VaadinSession;
 import com.vaadin.shared.ui.label.ContentMode;
 import com.vaadin.ui.Alignment;
 import com.vaadin.ui.Button;
@@ -96,6 +101,9 @@ public class MenuViewComponent extends CustomComponent {
 		Button logoutButton = new Button("Logout", new Button.ClickListener() {
 			@Override
 			public void buttonClick(ClickEvent event) {
+				String username = (String)VaadinSession.getCurrent().getAttribute("username");
+				UserController.updateCurrentUserStatus("Offline");
+				Broadcaster.broadcast(username, "Offline");
 				// logout user from DB
 				// Logout the user
 				getSession().setAttribute("username", null);
@@ -103,7 +111,7 @@ public class MenuViewComponent extends CustomComponent {
 				getUI().getSession().close();
 				
 				// Return to login view
-				getUI().getPage().setLocation(getUI().getPage().getLocation().getPath());
+				getUI().getNavigator().navigateTo("");
 			}
 		});
 		logoutButton.setStyleName(BaseTheme.BUTTON_LINK);

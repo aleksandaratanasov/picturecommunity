@@ -23,7 +23,8 @@ public class User implements Serializable {
 
 	private String username;
 	private String password;
-	
+	private String status;
+
 	// contacts stores all users that the current user has added to his friends list allowing them to view his gallery
 	// TODO Contacts should be a set
 	private LinkedList<User> contacts = new LinkedList<User>();
@@ -78,6 +79,13 @@ public class User implements Serializable {
 	public LinkedList<User> getContacts() {
 		if(contacts == null) contacts = new LinkedList<User>();
 		return contacts;
+	}
+	public String getStatus() {
+		return status;
+	}
+	
+	public void setStatus(String status) {
+		this.status = status;
 	}
 	
 	/*public LinkedList<User> getAddedBy() {

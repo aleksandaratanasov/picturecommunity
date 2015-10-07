@@ -1,8 +1,10 @@
 package com.example.picturecommunity.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -68,9 +70,9 @@ public class FriendsController {
 		return false;
 	}
 	
-	public List<String> getFriendNames() {
+	public Map<String, String> getFriendNamesAndStatus() {
 		
-		List<String> friendNames = new ArrayList<String>();
+		Map<String, String> friendNames = new HashMap<String,String>();
 		String currentUsername = (String) VaadinSession.getCurrent().getAttribute("username");
 		
 		EntityManager em = factory.createEntityManager();
@@ -82,7 +84,7 @@ public class FriendsController {
 			User user = (User)q.getSingleResult();
 			LinkedList<User> friends = user.getContacts();
 			for(User friend:friends) {
-				friendNames.add(friend.getUserName());
+				friendNames.put(friend.getUserName(), friend.getStatus());
 			}
 		}
 		catch(NoResultException ex) {
@@ -94,7 +96,7 @@ public class FriendsController {
 	public static List<String> getFriendNames(String user) {
 		
 		List<String> friendNames = new ArrayList<String>();
-		String currentUsername = (String)VaadinSession.getCurrent().getAttribute("username");
+		//String currentUsername = (String)VaadinSession.getCurrent().getAttribute("username");
 		
 		EntityManager em = factory.createEntityManager();
 		Query q = em
@@ -113,6 +115,8 @@ public class FriendsController {
 		}
 		return friendNames;
 	}
+
+	
 	
 	// TODO Add friends retrieval as a list of ids (more efficient then using strings)
 	/*public List<Long> getFriendIds() {

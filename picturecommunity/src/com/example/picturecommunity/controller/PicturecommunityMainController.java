@@ -9,6 +9,7 @@ import com.example.picturecommunity.view.LoginView;
 import com.example.picturecommunity.view.PersonalDashboardView;
 import com.example.picturecommunity.view.RegisterView;
 import com.example.picturecommunity.view.allUsersDashboardView;
+import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
 import com.vaadin.navigator.Navigator;
@@ -18,6 +19,7 @@ import com.vaadin.server.VaadinServlet;
 import com.vaadin.ui.UI;
 import com.vaadin.ui.VerticalLayout;
 
+@Push
 @SuppressWarnings("serial")
 @Theme("picturecommunity")
 public class PicturecommunityMainController extends UI {
@@ -59,10 +61,18 @@ public class PicturecommunityMainController extends UI {
 		navigator.addView(ADMINVIEW, new AdminView());
 		navigator.addView(ABOUTVIEW, new AboutView());
 		navigator.addView(REGISTERVIEW, new RegisterView());
-
+		
 	}
+	@Override
+    public void detach() {
+        
+        super.detach();
+    }
 
 	public User getUser() {
 		return user;
 	}
+
+	
+	
 }

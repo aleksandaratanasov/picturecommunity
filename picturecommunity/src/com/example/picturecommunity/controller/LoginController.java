@@ -2,8 +2,10 @@ package com.example.picturecommunity.controller;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
+import javax.persistence.EntityTransaction;
 import javax.persistence.Persistence;
 import javax.persistence.Query;
+
 import com.example.picturecommunity.model.User;
 import com.vaadin.server.VaadinService;
 import com.vaadin.server.VaadinSession;
@@ -35,10 +37,13 @@ public class LoginController {
 			try {
 				User user = (User) q.getSingleResult();
 				if (username.equalsIgnoreCase(user.getUserName()) && password.equals(user.getPassword())) isValid = true;
+				EntityTransaction entr =em.getTransaction();
+				entr.begin();
+				user.setStatus("Online");
+				entr.commit();
 			} catch (Exception e) {
 				return false;
 			}
-			
 			VaadinSession.getCurrent().setAttribute("username", username);
 			//VaadinService.getCurrentRequest().getWrappedSession().setAttribute("username", username);
 
