@@ -1,8 +1,11 @@
 package com.example.picturecommunity.view;
 
+import java.util.Collection;
+
 import com.example.picturecommunity.controller.AdminController;
 import com.example.picturecommunity.model.Image;
 import com.example.picturecommunity.model.User;
+import com.vaadin.data.Item;
 import com.vaadin.data.Property.ValueChangeEvent;
 import com.vaadin.data.Property.ValueChangeListener;
 import com.vaadin.event.FieldEvents.BlurEvent;
@@ -47,10 +50,22 @@ public class UserManagementViewComponent extends Panel {
 
 			@Override
 			public void buttonClick(ClickEvent event) {
-				controller.deleteUsers();
-				//deleteAllCheckbox.setValue(false);
-				//controller.getUsers();
-				table.refreshRowCache();
+				try{
+					getUI().access(new Runnable() {
+			            @Override
+			            public void run() {
+			            	controller.deleteUsers();
+			            	//deleteAllCheckbox.setValue(false);
+			            	//controller.getUsers();
+			            	createTable();
+			                // Show it somehow
+			            	getUI().markAsDirty();
+			                
+			            }
+			        });
+					}catch(Exception e) {
+						System.out.println(e.getMessage());
+					}
 			}
 		});
 		deleteButton.setStyleName(BaseTheme.BUTTON_LINK);
@@ -62,6 +77,14 @@ public class UserManagementViewComponent extends Panel {
 		}
 		
 		//Table table = new Table();
+		createTable();
+
+		layout.addComponent(deleteButton);
+		//layout.addComponent(deleteAllCheckbox);
+		layout.addComponent(table);
+		setContent(layout);
+	}
+	private void createTable() {
 		table = new Table();
 		table.setSelectable(true);
 		table.addStyleName("components-inside");
@@ -71,7 +94,7 @@ public class UserManagementViewComponent extends Panel {
 			 * 
 			 */
 			private static final long serialVersionUID = 1L;
-
+	
 			@Override
 		    public void columnResize(ColumnResizeEvent event) {
 		        // Get the new width of the resized column
@@ -79,7 +102,7 @@ public class UserManagementViewComponent extends Panel {
 		        
 		        // Get the property ID of the resized column
 		        String column = (String) event.getPropertyId();
-
+	
 		        // Do something with the information
 		        table.setColumnFooter(column, String.valueOf(width) + "px");
 		    }
@@ -143,7 +166,7 @@ public class UserManagementViewComponent extends Panel {
 				 * 
 				 */
 				private static final long serialVersionUID = 1L;
-
+	
 				public void buttonClick(ClickEvent event) {
 					String friends = "";
 					for(User u : user.getContacts()) friends += u.getUserName() + " ";
@@ -169,10 +192,5 @@ public class UserManagementViewComponent extends Panel {
 		
 		// Show just five rows because they are so high.
 		table.setPageLength(10);
-
-		layout.addComponent(deleteButton);
-		//layout.addComponent(deleteAllCheckbox);
-		layout.addComponent(table);
-		setContent(layout);
 	}
 }

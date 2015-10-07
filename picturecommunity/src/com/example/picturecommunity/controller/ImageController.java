@@ -71,12 +71,13 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 	@Override
 	public void uploadSucceeded(SucceededEvent event) {
 		new Notification("Upload successfull").show(Page.getCurrent());
-
+		
 
 		if(!fileExists){
 			user = UserController.findUserbyName(username);
 			createImage(file, comment, name, pictureViewStatus, user);
 			UserController.updateUploads(user);
+			
 		}else {
 			fileExists = false;
 		}
@@ -125,7 +126,7 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 					file.getPath(),
 					"",
 					temp_i.getWidth(), temp_i.getHeight(),
-					(name != "") ? name : file.getName(),
+					(name != "" || name != null) ? name : file.getName(),
 					viewstatus,
 					comment);
 			
@@ -170,6 +171,7 @@ public class ImageController implements Receiver, SucceededListener, ValueChange
 					i.setViewStatus(viewstatus);
 					i.setComment(comment);*/
 					em.persist(i);
+					user.getImages().add(i);
 				entr.commit();
 				
 			} finally {

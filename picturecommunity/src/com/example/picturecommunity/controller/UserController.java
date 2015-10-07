@@ -1,5 +1,8 @@
 package com.example.picturecommunity.controller;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
 import javax.persistence.EntityTransaction;
@@ -17,33 +20,51 @@ public class UserController {
 	public static User findUserbyName(String username){
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		EntityManager em = factory.createEntityManager();
-		
+		User user = null;
 		Query q = em.createQuery("SELECT u FROM User u WHERE u.username = :user");
 		q.setParameter("user", username);
 		try{	
-			User user =(User) q.getSingleResult();
-			return user;
+			user =(User) q.getSingleResult();
+			
 		}catch(Exception e){
 			System.err.println(e.getMessage());
 		}finally {
 			em.close();
 		}
-		return null;
+		return user;
+	}
+	
+	public static List<User> getAllUsers(){
+		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
+		EntityManager em = factory.createEntityManager();
+		List<User> users = new ArrayList<User>();
+		Query q = em.createQuery("SELECT u FROM User u");
+		
+		try{	
+			users =(List<User>) q.getResultList();
+		}catch(Exception e){
+			System.err.println(e.getMessage());
+		}finally {
+			em.close();
+		}
+		
+		return users;
 	}
 	
 	public static User findUserbyId(long id){
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		EntityManager em = factory.createEntityManager();
+		User user = null;
 		try{
-			User user = em.find(User.class, id);
-			return user;
+			user = em.find(User.class, id);
 		}catch(Exception e){
 			System.err.println(e.getMessage());
 		}finally {
 			em.close();
+			
 		}
 		
-		return null;
+		return user;
 	}
 	
 	public static void updateUploads(User user){

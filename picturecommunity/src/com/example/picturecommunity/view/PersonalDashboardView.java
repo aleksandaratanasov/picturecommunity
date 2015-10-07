@@ -1,6 +1,12 @@
 package com.example.picturecommunity.view;
 
-import com.example.picturecommunity.controller.PersonalDashboardController;
+import java.util.ArrayList;
+
+
+
+import java.util.List;
+
+import com.example.picturecommunity.controller.DashboardController;
 import com.example.picturecommunity.controller.PicturecommunityMainController;
 import com.example.picturecommunity.controller.UserController;
 import com.example.picturecommunity.model.Image;
@@ -51,7 +57,7 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 	Label greeting;
 	//User current_user;
 	boolean initialTrigger = true;
-	private PersonalDashboardController controller;
+	
 
 	public PersonalDashboardView(PicturecommunityMainController app) {
 		setSizeFull();
@@ -71,15 +77,18 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 		Notification.show("In this view you can manage your contacts and picture collection");
 		
 		String username = (String)VaadinSession.getCurrent().getAttribute("username");
+		if(username == null) getUI().getNavigator().navigateTo("");
 		greeting = new Label("Hello " + username + "!");
 		fvc = new FriendsViewComponent();
 		iuvc = new ImageUploadViewComponent();
-		personal_gallery = new GalleryViewComponent(username);
-
+		List<String> users = new ArrayList<String>();
+		users.add(username);
+		personal_gallery = new GalleryViewComponent(true);
+		fvc.resetUserNotFoundLabel();
 		// One time trigger for adding the required components upon entering the view
 		// After that only the objects that the components contains will be updated (see above)
 		if(initialTrigger) {
-			controller = new PersonalDashboardController();
+			
 			
 			// Populate the side menu
 			sideMenu.addComponent(greeting);
@@ -88,8 +97,8 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 			sideMenuAndGalleryView.addComponent(sideMenu);
 			sideMenuAndGalleryView.addComponent(personal_gallery);
 			// Populate the main view
-			mainView.addComponent(sideMenuAndGalleryView);
 			mainView.addComponent(iuvc);
+			mainView.addComponent(sideMenuAndGalleryView);
 			// Populate the top level layout
 			topLevelLayout.addComponent(mvc);
 			topLevelLayout.addComponent(mainView);

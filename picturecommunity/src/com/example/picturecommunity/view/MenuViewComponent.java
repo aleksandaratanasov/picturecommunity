@@ -29,23 +29,23 @@ public class MenuViewComponent extends CustomComponent {
 		layout.addComponent(title);
 		layout.setComponentAlignment(title, Alignment.TOP_LEFT);
 		
-		Label searchInCurrentDashboardLabel = new Label("Search in current dashboard: ");
-		layout.addComponent(searchInCurrentDashboardLabel);
-		layout.setComponentAlignment(searchInCurrentDashboardLabel, Alignment.TOP_LEFT);
-		TextField searchInCurrentDashboard = new TextField();
-		layout.addComponent(searchInCurrentDashboard);
-		layout.setComponentAlignment(searchInCurrentDashboard, Alignment.TOP_LEFT);
-		//searchInCurrentDashboard.setCaption("Search in current dashboard: ");
-		
-		Button searchInCurrentDashboardButton = new Button("Search", new Button.ClickListener() {
-			@Override
-			public void buttonClick(ClickEvent event) {
-				// Fire up a search query in the DB for all images in the currently presented dashboard
-				// TODO
-			}
-		});
-		layout.addComponent(searchInCurrentDashboardButton);
-		layout.setComponentAlignment(searchInCurrentDashboardButton, Alignment.TOP_LEFT);
+//		Label searchInCurrentDashboardLabel = new Label("Search for friends: ");
+//		layout.addComponent(searchInCurrentDashboardLabel);
+//		layout.setComponentAlignment(searchInCurrentDashboardLabel, Alignment.TOP_LEFT);
+//		TextField searchInCurrentDashboard = new TextField();
+//		layout.addComponent(searchInCurrentDashboard);
+//		layout.setComponentAlignment(searchInCurrentDashboard, Alignment.TOP_LEFT);
+//		searchInCurrentDashboard.setCaption("Search for friends: ");
+//		
+//		Button searchInCurrentDashboardButton = new Button("Search", new Button.ClickListener() {
+//			@Override
+//			public void buttonClick(ClickEvent event) {
+//				// Fire up a search query in the DB for all images in the currently presented dashboard
+//				// TODO
+//			}
+//		});
+//		layout.addComponent(searchInCurrentDashboardButton);
+//		layout.setComponentAlignment(searchInCurrentDashboardButton, Alignment.TOP_LEFT);
 		
 		// Add special "All Users Dashboard" view for administrators or modify the present one to distinguish
 		// between a normal user and an admin

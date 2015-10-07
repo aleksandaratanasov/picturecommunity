@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
+import java.util.Vector;
 
 import javax.persistence.EntityManager;
 import javax.persistence.EntityManagerFactory;
@@ -15,13 +16,15 @@ import javax.persistence.Query;
 
 import com.example.picturecommunity.model.User;
 import com.vaadin.server.VaadinSession;
+import com.vaadin.ui.Notification;
 
 public class FriendsController {
 
 	private static final String PERSISTENCE_UNIT_NAME = "picturecommunity";
 	private static EntityManagerFactory factory;
 	
-	
+	private String 	username = (String)	VaadinSession.getCurrent().getAttribute("username");
+	private User currentUser = UserController.findUserbyName(username);
 	public FriendsController() {
 		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 		
@@ -73,16 +76,12 @@ public class FriendsController {
 	public Map<String, String> getFriendNamesAndStatus() {
 		
 		Map<String, String> friendNames = new HashMap<String,String>();
-		String currentUsername = (String) VaadinSession.getCurrent().getAttribute("username");
 		
-		EntityManager em = factory.createEntityManager();
-		Query q = em
-				.createQuery("SELECT u FROM User u WHERE u.username = :login");
-		q.setParameter("login", currentUsername);
-		
+		String 	username = (String)	VaadinSession.getCurrent().getAttribute("username");
+		currentUser = UserController.findUserbyName(username);
 		try {
-			User user = (User)q.getSingleResult();
-			LinkedList<User> friends = user.getContacts();
+			
+			LinkedList<User> friends = currentUser.getContacts();
 			for(User friend:friends) {
 				friendNames.put(friend.getUserName(), friend.getStatus());
 			}
@@ -91,6 +90,36 @@ public class FriendsController {
 			System.out.println(ex.getMessage());
 		}
 		return friendNames;
+	}
+	
+	public List<User> getSearchedUsers(String keyword) {
+		
+		List<User> result = new ArrayList<User>();
+		if(keyword == null || keyword.isEmpty()) {
+			return result;
+		}
+		EntityManager em = factory.createEntityManager();
+		List<User> users;
+		
+		try {						
+			users = (List<User>)em.createQuery("SELECT u FROM User u ORDER BY u.username ASC")
+							.getResultList();
+			for(User user : users) {
+				
+				if(!user.getUserName().contentEquals(username) && user.getUserName().contains(keyword)) {
+					result.add(user);
+				}
+			}
+		}catch(Exception ex) {
+			Notification.show(ex.getMessage());
+		}
+		finally {
+			em.close();
+		}
+		return result;
+	}
+	public User getCurrentUser() {
+		return currentUser;
 	}
 	
 	public static List<String> getFriendNames(String user) {

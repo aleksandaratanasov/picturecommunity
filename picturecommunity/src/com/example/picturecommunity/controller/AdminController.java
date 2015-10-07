@@ -164,6 +164,20 @@ public class AdminController {
 		try {
 			EntityTransaction tx = em.getTransaction();
 			tx.begin();
+			List<User> allUsers = (List<User>)em.createQuery(
+					"SELECT u FROM User u ORDER BY u.username ASC")
+				    .getResultList();
+			for(User user : allUsers) {
+				List<User> contacts = user.getContacts();
+				for(User contact : contacts) {
+					if(contact.getId() == u.getId()) {
+						contacts.remove(contact);
+					}
+				}
+			}
+			while(!u.getContacts().isEmpty()) {
+				u.getContacts().remove();
+			}
 			  /*List<User> relatedUsers = (List<User>)em.createQuery(
 					"SELECT u FROM User u WHERE u.id != :id")
 					  .setParameter("id", u.getId())
@@ -173,12 +187,12 @@ public class AdminController {
 			  }*/
 			  // Delete all entries of other users that have the selected user in their contacts
 			  // TODO Use access the JPA-style (see the change of viewStatus in GalleryImageViewController)
-			  /*Query qDeleteAddedBy = em.createNativeQuery(
-					  "DELETE FROM my_user_my_user WHERE contacts_ID = :id").setParameter("id", u.getId());
-  			  // Delete all entries of selected user that contain his contacts
-			  Query qOwn = em.createNativeQuery( //em.createQuery(
-					  "DELETE FROM my_user_my_user WHERE User_ID = :id").setParameter("id", u.getId());
-			  */		  
+//			  Query qDeleteAddedBy = em.createNativeQuery(
+//					  "DELETE FROM my_user_my_user WHERE contacts_id = :id").setParameter("id", u.getId());
+//  			  // Delete all entries of selected user that contain his contacts
+//			  Query qOwn = em.createNativeQuery( //em.createQuery(
+//					  "DELETE FROM my_user_my_user WHERE user_id = :id").setParameter("id", u.getId());
+			  		  
 			tx.commit();
 		}
 		catch(Exception ex) {

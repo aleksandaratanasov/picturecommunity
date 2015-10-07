@@ -46,7 +46,7 @@ public class GalleryImageViewComponent extends CustomComponent{
 	VerticalLayout uploadStatsAndViewStatus;
 	HorizontalLayout uploaderAndStatus;
 
-	public GalleryImageViewComponent(Image img) {
+	public GalleryImageViewComponent(Image img, boolean isPersonal) {
 		
 		// Vaadin doesn't allow adding null as a component (for good reason) so we have
 		// to create a representation of an empty cell
@@ -112,11 +112,17 @@ public class GalleryImageViewComponent extends CustomComponent{
 		layout.addComponent(comment);
 		layout.setComponentAlignment(comment, Alignment.MIDDLE_CENTER);
 		//CheckBox viewStatus = new CheckBox("Private");
+		uploadStatsAndViewStatus = new VerticalLayout();
+		uploaderAndStatus = new HorizontalLayout();
+		Label uploader = new Label("Uploader: " + controller.getImage().getUploader().getUserName());
+		uploaderAndStatus.addComponent(uploader);
+		uploaderAndStatus.setComponentAlignment(uploader, Alignment.MIDDLE_LEFT);
+		if(isPersonal) {
 		CheckBox viewStatus = new CheckBox("Public", controller.getImage().getViewStatus());
 		viewStatus.addBlurListener(new BlurListener() {
-
+			
 			private static final long serialVersionUID = 1814712743184783174L;
-
+			
 			@Override
 			public void blur(BlurEvent event) {
 				if(viewStatus.getValue()) {
@@ -129,14 +135,11 @@ public class GalleryImageViewComponent extends CustomComponent{
 				controller.changeViewStatus(viewStatus.getValue());
 			}
 		});
+		//FIXME Report bug: when checkbox is disabled, it's label disappears but the checkbox itself is still there though in read-only mode
 		
-		uploadStatsAndViewStatus = new VerticalLayout();
-		uploaderAndStatus = new HorizontalLayout();
-		Label uploader = new Label("Uploader: " + controller.getImage().getUploader().getUserName());
-		uploaderAndStatus.addComponent(uploader);
-		uploaderAndStatus.setComponentAlignment(uploader, Alignment.MIDDLE_LEFT);
 		uploaderAndStatus.addComponent(viewStatus);
 		uploaderAndStatus.setComponentAlignment(viewStatus, Alignment.MIDDLE_RIGHT);
+		}
 		uploadStatsAndViewStatus.addComponent(uploaderAndStatus);
 		uploadStatsAndViewStatus.addComponent(new Label("Upload date: " + img.getUploadTimeAsString()));
 		this.addStyleName("image-component");

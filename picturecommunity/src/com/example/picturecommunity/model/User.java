@@ -26,7 +26,8 @@ public class User implements Serializable {
 	private String status;
 
 	// contacts stores all users that the current user has added to his friends list allowing them to view his gallery
-	// TODO Contacts should be a set
+	
+	// TODO use getAllUsers()
 	private LinkedList<User> contacts = new LinkedList<User>();
 	// addedBy stores all users that have the current user in their contacts list
 	// The main purpose of this is to make the deletion process of an user easier
