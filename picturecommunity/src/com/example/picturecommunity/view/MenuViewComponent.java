@@ -50,6 +50,7 @@ public class MenuViewComponent extends CustomComponent {
 		// Add special "All Users Dashboard" view for administrators or modify the present one to distinguish
 		// between a normal user and an admin
 		//if(!adminMode) {
+		if(!adminMode) {
 			Button allUsersDashboardButton = new Button("All users' dashboard", new Button.ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
@@ -59,9 +60,7 @@ public class MenuViewComponent extends CustomComponent {
 			allUsersDashboardButton.setStyleName(BaseTheme.BUTTON_LINK);
 			layout.addComponent(allUsersDashboardButton);
 			layout.setComponentAlignment(allUsersDashboardButton, Alignment.TOP_CENTER);
-		//}
 		
-		if(!adminMode) {
 			Button personalDashboardButton = new Button("Personal dashboard", new Button.ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
@@ -72,7 +71,7 @@ public class MenuViewComponent extends CustomComponent {
 			layout.addComponent(personalDashboardButton);
 			layout.setComponentAlignment(personalDashboardButton, Alignment.TOP_CENTER);
 		}
-		else {
+		/*else {
 			Button adminDashboardButton = new Button("Admin dashboard", new Button.ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
@@ -82,11 +81,11 @@ public class MenuViewComponent extends CustomComponent {
 			adminDashboardButton.setStyleName(BaseTheme.BUTTON_LINK);
 			layout.addComponent(adminDashboardButton);
 			layout.setComponentAlignment(adminDashboardButton, Alignment.TOP_CENTER);
-		}
+		}*/
 
 		// Add special "About" view for administrators or modify the present one to distinguish
 		// between a normal user and an admin
-		if(!adminMode) {
+		/*if(!adminMode) {
 			Button aboutButton = new Button("About", new Button.ClickListener() {
 				@Override
 				public void buttonClick(ClickEvent event) {
@@ -96,7 +95,7 @@ public class MenuViewComponent extends CustomComponent {
 			aboutButton.setStyleName(BaseTheme.BUTTON_LINK);
 			layout.addComponent(aboutButton);
 			layout.setComponentAlignment(aboutButton, Alignment.TOP_RIGHT);
-		}
+		}*/
 		
 		Button logoutButton = new Button("Logout", new Button.ClickListener() {
 			@Override

@@ -57,11 +57,6 @@ public class FriendsController {
 					EntityTransaction entr = em.getTransaction();
 					entr.begin();
 					currentUser.addContact(friend);
-//				Query query = em.createQuery(
-//						"UPDATE User u SET u.contacts = :contacts WHERE u.username = :username");
-//				query.setParameter("contacts", currentUser.getContacts());
-//				query.setParameter("username", currentUsername);
-//				query.executeUpdate();
 				entr.commit();
 				return true;
 				}
@@ -144,11 +139,4 @@ public class FriendsController {
 		}
 		return friendNames;
 	}
-
-	
-	
-	// TODO Add friends retrieval as a list of ids (more efficient then using strings)
-	/*public List<Long> getFriendIds() {
-		return null;
-	}*/
 }
