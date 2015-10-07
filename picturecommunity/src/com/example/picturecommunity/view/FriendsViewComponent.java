@@ -43,16 +43,16 @@ public class FriendsViewComponent extends CustomComponent implements Broadcaster
 	VerticalLayout layout = new VerticalLayout();
 	
 	friendsTable = new Table();
-	friendsTable.addContainerProperty("Name", Label.class, null);
-	friendsTable.addContainerProperty("Status", Label.class, null);
+	friendsTable.addContainerProperty("Name", String.class, null);
+	friendsTable.addContainerProperty("Status", String.class, null);
 	friendsTable.setPageLength(friendsTable.size());
 	Map<String,String> friendNames = friendsController.getFriendNamesAndStatus();
 	
 	for(Entry<String, String> entry:friendNames.entrySet()) {
 		Object newItemId = friendsTable.addItem();
 		Item row = friendsTable.getItem(newItemId);
-		row.getItemProperty("Name").setValue(new Label(entry.getKey()));
-		row.getItemProperty("Status").setValue(new Label(entry.getValue()));
+		row.getItemProperty("Name").setValue(entry.getKey());
+		row.getItemProperty("Status").setValue(entry.getValue());
 	}
 	Label addFriendLabel = new Label("Type in friends name: ");
 	userNotFoundLabel = new Label("Friend could not be added");
@@ -61,7 +61,7 @@ public class FriendsViewComponent extends CustomComponent implements Broadcaster
 	searchTable = new Table();
 	
 	searchTable.setSelectable(true);
-	searchTable.addContainerProperty("Username",Label.class,null);
+	searchTable.addContainerProperty("Username",String.class,null);
 	searchTable.addContainerProperty("Add",Button.class,null);
 	searchTable.setPageLength(searchTable.size());
 	Button addFriendButton = new Button("Search for Friends", new Button.ClickListener() {
@@ -88,7 +88,7 @@ public class FriendsViewComponent extends CustomComponent implements Broadcaster
 				
 				Object newItemId = searchTable.addItem();
 				Item row = searchTable.getItem(newItemId);
-				row.getItemProperty("Username").setValue(new Label(user.getUserName()));
+				row.getItemProperty("Username").setValue(user.getUserName());
 				Button detailsField = new Button("+");
 				if(friendsController.getFriendNames(friendsController.getCurrentUser().getUserName()).contains(user.getUserName())) {
 					detailsField.setEnabled(false);
@@ -106,8 +106,8 @@ public class FriendsViewComponent extends CustomComponent implements Broadcaster
 							Map<String,String> friendNames = friendsController.getFriendNamesAndStatus();
 							Object newItemId = friendsTable.addItem();
 							Item row = friendsTable.getItem(newItemId);
-							row.getItemProperty("Name").setValue(new Label(user.getUserName()));
-							row.getItemProperty("Status").setValue(new Label(friendNames.get(addFriendField.getValue())));
+							row.getItemProperty("Name").setValue(user.getUserName());
+							row.getItemProperty("Status").setValue(friendNames.get(addFriendField.getValue()));
 							detailsField.setEnabled(false);
 						}
 			        } 
