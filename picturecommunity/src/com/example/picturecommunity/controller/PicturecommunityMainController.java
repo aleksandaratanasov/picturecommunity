@@ -8,7 +8,7 @@ import com.example.picturecommunity.view.AdminView;
 import com.example.picturecommunity.view.LoginView;
 import com.example.picturecommunity.view.PersonalDashboardView;
 import com.example.picturecommunity.view.RegisterView;
-import com.example.picturecommunity.view.allUsersDashboardView;
+import com.example.picturecommunity.view.AllUsersDashboardView;
 import com.vaadin.annotations.Push;
 import com.vaadin.annotations.Theme;
 import com.vaadin.annotations.VaadinServletConfiguration;
@@ -56,7 +56,7 @@ public class PicturecommunityMainController extends UI {
 		
 		// Add all views to the navigator
 		navigator.addView("", new LoginView(this));
-		navigator.addView(ALLUSERSDASHBOARDVIEW, new allUsersDashboardView());
+		navigator.addView(ALLUSERSDASHBOARDVIEW, new AllUsersDashboardView());
 		navigator.addView(PERSONALDASHBOARDVIEW, new PersonalDashboardView(this));
 		navigator.addView(ADMINVIEW, new AdminView());
 		navigator.addView(ABOUTVIEW, new AboutView());

@@ -17,6 +17,7 @@ public class LoginController {
 	private static EntityManagerFactory factory;
 
 	public LoginController() {
+		factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 	}
 
 	/**
@@ -26,23 +27,27 @@ public class LoginController {
 	 * @return 
 	 */
 	public boolean validate(String username, String password) {
-		boolean isValid = false;
-		if (username.isEmpty()) return isValid;
+		boolean isValid = true;
+		if (username.isEmpty()) return false;
 		else {
-			factory = Persistence.createEntityManagerFactory(PERSISTENCE_UNIT_NAME);
 			EntityManager em = factory.createEntityManager();
 			Query q = em.createQuery("SELECT u FROM User u WHERE u.username = :login AND u.password = :pass");
 			q.setParameter("login", username);
 			q.setParameter("pass", password);
 			try {
 				User user = (User) q.getSingleResult();
-				if (username.equalsIgnoreCase(user.getUserName()) && password.equals(user.getPassword())) isValid = true;
-				EntityTransaction entr =em.getTransaction();
+				// We only need to check if user == null since we already retrieve a possible hit using the given username and password from the table
+				if(user == null) isValid = false;
+				//if (username.equalsIgnoreCase(user.getUserName()) && password.equals(user.getPassword())) isValid = true;
+				EntityTransaction entr = em.getTransaction();
 				entr.begin();
 				user.setStatus("Online");
 				entr.commit();
 			} catch (Exception e) {
 				return false;
+			}
+			finally {
+				em.close();
 			}
 			VaadinSession.getCurrent().setAttribute("username", username);
 			//VaadinService.getCurrentRequest().getWrappedSession().setAttribute("username", username);

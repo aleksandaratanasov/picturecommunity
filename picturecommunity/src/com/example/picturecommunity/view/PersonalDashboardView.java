@@ -1,16 +1,6 @@
 package com.example.picturecommunity.view;
 
-import java.util.ArrayList;
-
-
-
-import java.util.List;
-
-import com.example.picturecommunity.controller.DashboardController;
 import com.example.picturecommunity.controller.PicturecommunityMainController;
-import com.example.picturecommunity.controller.UserController;
-import com.example.picturecommunity.model.Image;
-import com.example.picturecommunity.model.User;
 import com.vaadin.navigator.View;
 import com.vaadin.navigator.ViewChangeListener.ViewChangeEvent;
 import com.vaadin.server.VaadinSession;
@@ -81,15 +71,11 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 		greeting = new Label("Hello " + username + "!");
 		fvc = new FriendsViewComponent();
 		iuvc = new ImageUploadViewComponent();
-		List<String> users = new ArrayList<String>();
-		users.add(username);
 		personal_gallery = new GalleryViewComponent(true);
 		fvc.resetUserNotFoundLabel();
 		// One time trigger for adding the required components upon entering the view
 		// After that only the objects that the components contains will be updated (see above)
 		if(initialTrigger) {
-			
-			
 			// Populate the side menu
 			sideMenu.addComponent(greeting);
 			sideMenu.addComponent(fvc);
@@ -108,20 +94,5 @@ public class PersonalDashboardView extends VerticalLayout implements View {
 			// Deactivate component insertion
 			initialTrigger = false;
 		}
-		
-		/*sideMenu.replaceComponent(fvc, fvc);
-		sideMenuAndGalleryView.replaceComponent(sideMenu, sideMenu);
-		sideMenuAndGalleryView.replaceComponent(personal_gallery, personal_gallery);
-		mainView.replaceComponent(sideMenuAndGalleryView, sideMenuAndGalleryView);
-		topLevelLayout.replaceComponent(mainView, mainView);*/
-		
-		// Move this to the controller and populate GalleryViewComponent using "getAllGalleryImageComponents()" (returns a list of components
-		// Code below is currently only FOR TESTING purposes
-		/*current_user = UserController.findUserbyName(username);
-		if(current_user != null)
-			for (Image img : current_user.getImages()) {
-				addComponent(new GalleryImageViewComponent(img));
-			}*/
 	}
-
 }

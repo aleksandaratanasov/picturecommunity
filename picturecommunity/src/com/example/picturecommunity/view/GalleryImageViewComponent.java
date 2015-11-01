@@ -32,20 +32,32 @@ import com.example.picturecommunity.controller.GalleryImageController;
 import com.example.picturecommunity.controller.PicturecommunityMainController;
 import com.example.picturecommunity.model.Image;
 
+/*
+ * GalleryImageViewComponent
+ * Description: container for a single image
+ * 
+ * Theis component allows interaction between the user and the image in the DB. An uploader has the ability
+ * to change the viewing status (private or public). All users (if allowed to view the image) can zoom the image
+ * by clicking on its thumbnail representation. Closing the zoomed image is done by clicking on it, using the X butto
+ * of the spawned sub-window or pressing the ESC key
+ */
 // A container for a single image allowing user interaction with the underlying
-// image collection of the specific user
-// Parent: GalleryViewCOmponent
+// image that was uploaded by a user
+// Parent: GalleryViewCoponent
 public class GalleryImageViewComponent extends CustomComponent{
-	
-	/**
-	 * 
-	 */
+
 	private static final long serialVersionUID = 1L;
 	private GalleryImageController controller;
 	VerticalLayout layout;
 	VerticalLayout uploadStatsAndViewStatus;
 	HorizontalLayout uploaderAndStatus;
 
+	/*
+	 * @param img An Image (model) object that represents an entry in the my_image table
+	 * @param isPersonal The component has two states when it comes to viewing:
+	 * 			- PersonalDashboard: here all private and public images of the uploader are displayed and allow changing the view status (isPersonal: true)
+	 *			- AllUsersDashBoard: here only all public images are displayed. If a non-uploader user is a "friend" of the person who has uploaded some images he will also see his private ones (isPersonal: false)
+	 */
 	public GalleryImageViewComponent(Image img, boolean isPersonal) {
 		
 		// Vaadin doesn't allow adding null as a component (for good reason) so we have

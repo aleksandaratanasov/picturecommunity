@@ -58,9 +58,7 @@ public class UserManagementViewComponent extends Panel {
 			            	//deleteAllCheckbox.setValue(false);
 			            	//controller.getUsers();
 			            	createTable();
-			                // Show it somehow
-			            	getUI().markAsDirty();
-			                
+			            	getUI().markAsDirtyRecursive();
 			            }
 			        });
 					}catch(Exception e) {
@@ -84,15 +82,13 @@ public class UserManagementViewComponent extends Panel {
 		layout.addComponent(table);
 		setContent(layout);
 	}
+	
 	private void createTable() {
 		table = new Table();
 		table.setSelectable(true);
 		table.addStyleName("components-inside");
 		table.setColumnCollapsingAllowed(true);
 		table.addColumnResizeListener(new Table.ColumnResizeListener(){
-			/**
-			 * 
-			 */
 			private static final long serialVersionUID = 1L;
 	
 			@Override

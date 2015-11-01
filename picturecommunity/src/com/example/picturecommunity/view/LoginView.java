@@ -30,8 +30,7 @@ public class LoginView extends VerticalLayout implements View {
 		setSizeFull();
 		setSpacing(true);
 		Label label = new Label(
-				"<center><h1>Welcome to Picture Community!</h1><br/>Enter your information below to log in.</center>");
-		label.setContentMode(ContentMode.HTML);
+				"<center><h1>Welcome to Picture Community!</h1><br/>Enter your information below to log in.</center>", ContentMode.HTML);
 		TextField username = new TextField("Username");
 		PasswordField password = new PasswordField("Password");
 		Label failedLabel = new Label(

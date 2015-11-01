@@ -12,7 +12,7 @@ import com.vaadin.ui.VerticalLayout;
 
 @SuppressWarnings("serial")
 @PreserveOnRefresh
-public class allUsersDashboardView extends VerticalLayout implements View {
+public class AllUsersDashboardView extends VerticalLayout implements View {
 
 	VerticalLayout topLevelLayout;				// Contains top menu and main layout
 	VerticalLayout mainView;					// Contains contacts, gallery and image uploader
@@ -27,7 +27,7 @@ public class allUsersDashboardView extends VerticalLayout implements View {
 	//User current_user;
 	boolean initialTrigger = true;
 	
-	public allUsersDashboardView() {
+	public AllUsersDashboardView() {
 		setSizeFull();
 		setSpacing(true);
 		topLevelLayout = new VerticalLayout();
